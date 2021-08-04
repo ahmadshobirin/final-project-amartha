@@ -4,5 +4,6 @@ import "fmt"
 
 func main() {
 	fmt.Println("push to master")
-	fmt.Println("ini punya fitur A")
+  fmt.Println("ini punya fitur A")
+	fmt.Println("feature B")
 }
