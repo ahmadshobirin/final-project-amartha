@@ -1,4 +1,4 @@
-## TENTANG
+## Tentang
 
 Seperti yang kita tahu pada Maret 2020 virus Covid-19 di Indonesia pertama kali dideteksi. Kebijakan-kebijakan pemerintah diperbaharui untuk memutus rantai penyebaran virus. Perlahan rutininitas masyarakat pun berubah, hampir segalanya dilakukan di rumah. apabila tidak memungkinkan harus mengikuti prokes yang ketat dan apabila keluar kota swab-test menjadi syarat utama untuk mengantongi tiket.
 
