@@ -13,10 +13,12 @@ tags:
 - name: Auth
   description: Authentication Api
 - name: User
-  description: User
+  description: User Api
+- name: City
+  description: City Api
 
 paths:
-  /login:
+  /auth/login:
     post:
       tags:
       - Auth
@@ -48,7 +50,7 @@ paths:
                     $ref: '#/components/schemas/JWT'
         400:
           description: invalid input, object invalid
-  /register:
+  /auth/register:
     post:
       tags:
       - Auth
@@ -95,7 +97,7 @@ paths:
                     $ref: '#/components/schemas/JWT'
         400:
           description: Bad Request
-  /profile:
+  /user/profile:
     get:
       security:
         - bearerAuth: []
@@ -123,7 +125,168 @@ paths:
         400:
           description: Bad Request
 
+  /city:
+   get:
+    security:
+        - bearerAuth: []
+    tags:
+    - City
+    summary: Retrive data City
+    responses:
+      200:
+        description: A list of city
+        content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: 'OK'
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/City'
+      400:
+        description: Bad Request
+   post:
+    security:
+        - bearerAuth: []
+    tags:
+    - City
+    summary: Save Data City
+    requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/City'
+    responses:
+      200:
+        description: A list of users
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status_code:
+                  type: integer
+                  example: 200
+                message:
+                  type: string
+                  example: 'OK'
+                data:
+                  type: object
+      400:
+        description: Bad Request
 
+  /city/{cityID}/edit:
+    put:
+     security:
+        - bearerAuth: []
+     tags:
+      - City
+     summary: Retrive data City by ID
+     parameters:
+        - in: path
+          name: cityID
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the city to get
+     requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/City'
+     responses:
+      200:
+        description: A list of city
+        content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: 'OK'
+                  data:
+                    type: object
+                    $ref: '#/components/schemas/City'
+      400:
+        description: Bad Request
+  /city/{cityID}:
+    get:
+     security:
+        - bearerAuth: []
+     tags:
+      - City
+     summary: Retrive data City by ID
+     parameters:
+        - in: path
+          name: cityID
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the city to get
+     responses:
+      200:
+        description: A list of city
+        content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: 'OK'
+                  data:
+                    type: object
+                    $ref: '#/components/schemas/City'
+      400:
+        description: Bad Request
+    delete:
+     security:
+        - bearerAuth: []
+     tags:
+      - City
+     summary: Delete City by ID
+     parameters:
+        - in: path
+          name: cityID
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the city to get
+     responses:
+      200:
+        description: A list of city
+        content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: 'OK'
+                  data:
+                    type: object
+      400:
+        description: Bad Request
 components:
   securitySchemes:
     bearerAuth:
@@ -179,6 +342,30 @@ components:
           type: string
           example: ahmadshobirin@alterra.com
         created_at:
+          type: string
+          format: date-time
+          example: 2021-08-09T12:02:57Z
+        updated_at:
+          type: string
+          format: date-time
+          example: 2021-08-09T12:02:57Z
+    City:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        code:
+          type: string
+          example: SBY
+        name:
+          type: string
+          example: Surabaya
+        created_at:
+          type: string
+          format: date-time
+          example: 2021-08-09T12:02:57Z
+        updated_at:
           type: string
           format: date-time
           example: 2021-08-09T12:02:57Z
