@@ -16,6 +16,10 @@ tags:
   description: User Api
 - name: City
   description: City Api
+- name: Clinic
+  description: Clinic Api
+- name: Transaction
+  description: Transaction Api
 
 paths:
   /auth/login:
@@ -183,7 +187,6 @@ paths:
                   type: object
       400:
         description: Bad Request
-
   /city/{cityID}/edit:
     put:
      security:
@@ -287,6 +290,7 @@ paths:
                     type: object
       400:
         description: Bad Request
+
 components:
   securitySchemes:
     bearerAuth:
@@ -335,6 +339,12 @@ components:
         id:
           type: integer
           example: 1
+        role_id:
+          type: integer
+          example: 1
+        role:
+          type: string
+          example: admin
         name:
           type: string
           example: ahamad Shobirin
@@ -361,6 +371,43 @@ components:
         name:
           type: string
           example: Surabaya
+        created_at:
+          type: string
+          format: date-time
+          example: 2021-08-09T12:02:57Z
+        updated_at:
+          type: string
+          format: date-time
+          example: 2021-08-09T12:02:57Z
+    Clinic:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        user_id:
+          type: integer
+          example: 1
+        user:
+          type: string
+          example: Admin Cabang Sidoarjo
+        city_id:
+          type: integer
+          example: 1
+        city:
+          type: string
+          example: Surabaya
+        name:
+          type: string
+          example: CABANG Sidoarjo
+        open:
+          type: string
+          format: time
+          example: 08:15
+        close:
+          type: string
+          format: time
+          example: 08:15
         created_at:
           type: string
           format: date-time
