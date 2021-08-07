@@ -295,6 +295,7 @@ components:
   securitySchemes:
     bearerAuth:
       type: http
+
       scheme: bearer
       bearerFormat: JWT
   schemas:
@@ -319,7 +320,7 @@ components:
       - refresh_token
       - expire_refresh_token
       properties:
-        email:
+        token:
           type: string
           example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.|eyJleHAiOjE2Mjg1MTA1NzcsImp0aSI6ImV5SmhiR2NpT2l a7C6ZcazsgjdKXR2eXOPRzBhRv99NOaDMNN2gyYDE2Y
         expire_token:
