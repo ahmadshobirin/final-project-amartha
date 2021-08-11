@@ -27,5 +27,10 @@ func (cu *CityUsecase) Find(ctx context.Context) ([]Domain, error) {
 }
 
 func (cu *CityUsecase) FindByID(ctx context.Context, id int) (Domain, error) {
-	return Domain{}, nil
+	resp, err := cu.cityRespository.FindByID(ctx, id)
+	if err != nil {
+		return Domain{}, err
+	}
+
+	return resp, nil
 }

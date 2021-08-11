@@ -10,6 +10,8 @@ import (
 
 	_dbHelper "main-backend/helper/database"
 
+	_routes "main-backend/app/routers"
+
 	"github.com/labstack/echo/v4"
 
 	"github.com/spf13/viper"
@@ -43,7 +45,13 @@ func main() {
 
 	cityRepo := _cityRepo.NewCityRepository(db)
 	cityUsecase := _cityUsecase.NewCityUsecase(timeoutContext, cityRepo)
-	_cityController.NewCityController(e, cityUsecase)
+	cityCtrl := _cityController.NewCityController(e, cityUsecase)
+
+	routesInit := _routes.ControllerList{
+		CityController: *cityCtrl,
+	}
+
+	routesInit.RouteRegister(e)
 
 	log.Fatal(e.Start(viper.GetString("server.address")))
 

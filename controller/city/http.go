@@ -4,6 +4,7 @@ import (
 	"main-backend/bussiness/city"
 	"main-backend/controller"
 	"main-backend/controller/city/response"
+	"main-backend/helper/str"
 
 	"net/http"
 
@@ -14,13 +15,10 @@ type CityController struct {
 	cityUsecase city.Usecase
 }
 
-func NewCityController(e *echo.Echo, cu city.Usecase) {
-	controller := &CityController{
+func NewCityController(e *echo.Echo, cu city.Usecase) *CityController {
+	return &CityController{
 		cityUsecase: cu,
 	}
-
-	category := e.Group("/api/v1/city")
-	category.GET("", controller.Find)
 }
 
 func (ctrl *CityController) Find(c echo.Context) error {
@@ -37,4 +35,16 @@ func (ctrl *CityController) Find(c echo.Context) error {
 	}
 
 	return controller.NewSuccessResponse(c, responseController)
+}
+
+func (ctrl *CityController) FindByID(c echo.Context) error {
+	ctx := c.Request().Context()
+	ID := str.StringToInt(c.Param("id"))
+
+	resp, err := ctrl.cityUsecase.FindByID(ctx, ID)
+	if err != nil {
+		return controller.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+
+	return controller.NewSuccessResponse(c, response.FromDomain(resp))
 }
