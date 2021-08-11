@@ -23,5 +23,5 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 
 	roleRouter := r.Group("/role")
 	roleRouter.GET("", cl.RoleController.Find)
-	// cityRouter.GET("/:id", cl.RoleController.FindByID)
+	roleRouter.GET("/:id", cl.RoleController.FindByID)
 }

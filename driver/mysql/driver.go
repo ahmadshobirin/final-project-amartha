@@ -1,4 +1,4 @@
-package database
+package mysql_driver
 
 import (
 	"fmt"

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"time"
 
@@ -13,9 +12,8 @@ import (
 	_roleController "main-backend/controller/role"
 	_roleRepo "main-backend/driver/database/role"
 
-	_dbHelper "main-backend/helper/database"
+	_dbHelper "main-backend/driver/mysql"
 
-	_middleware "main-backend/app/middleware"
 	_routes "main-backend/app/routers"
 
 	"github.com/labstack/echo/v4"
@@ -45,12 +43,12 @@ func main() {
 	}
 	db := configdb.InitialDB()
 
-	configJWT := _middleware.ConfigJWT{
-		SecretJWT:       viper.GetString(`jwt.secret`),
-		ExpiresDuration: viper.GetInt(`jwt.expired`),
-	}
+	// configJWT := _middleware.ConfigJWT{
+	// 	SecretJWT:       viper.GetString(`jwt.secret`),
+	// 	ExpiresDuration: viper.GetInt(`jwt.expired`),
+	// }
 
-	fmt.Printf("%+v", configJWT)
+	// fmt.Printf("%+v", configJWT)
 
 	timeoutContext := time.Duration(viper.GetInt("context.timeout")) * time.Second
 
