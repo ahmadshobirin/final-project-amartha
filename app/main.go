@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"time"
 
@@ -8,8 +9,13 @@ import (
 	_cityController "main-backend/controller/city"
 	_cityRepo "main-backend/driver/database/city"
 
+	_roleUsecase "main-backend/bussiness/role"
+	_roleController "main-backend/controller/role"
+	_roleRepo "main-backend/driver/database/role"
+
 	_dbHelper "main-backend/helper/database"
 
+	_middleware "main-backend/app/middleware"
 	_routes "main-backend/app/routers"
 
 	"github.com/labstack/echo/v4"
@@ -39,6 +45,13 @@ func main() {
 	}
 	db := configdb.InitialDB()
 
+	configJWT := _middleware.ConfigJWT{
+		SecretJWT:       viper.GetString(`jwt.secret`),
+		ExpiresDuration: viper.GetInt(`jwt.expired`),
+	}
+
+	fmt.Printf("%+v", configJWT)
+
 	timeoutContext := time.Duration(viper.GetInt("context.timeout")) * time.Second
 
 	e := echo.New()
@@ -47,8 +60,13 @@ func main() {
 	cityUsecase := _cityUsecase.NewCityUsecase(timeoutContext, cityRepo)
 	cityCtrl := _cityController.NewCityController(e, cityUsecase)
 
+	roleRepo := _roleRepo.NewRoleRepository(db)
+	roleUsecase := _roleUsecase.NewRoleUsecase(timeoutContext, roleRepo)
+	roleCtrl := _roleController.NewRoleController(e, roleUsecase)
+
 	routesInit := _routes.ControllerList{
 		CityController: *cityCtrl,
+		RoleController: *roleCtrl,
 	}
 
 	routesInit.RouteRegister(e)

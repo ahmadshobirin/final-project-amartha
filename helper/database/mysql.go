@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	cityRepo "main-backend/driver/database/city"
+	roleRepo "main-backend/driver/database/role"
 	"time"
 
 	"gorm.io/driver/mysql"
@@ -38,7 +39,7 @@ func (config *ConfigDB) InitialDB() *gorm.DB {
 }
 
 func Migrate(DB *gorm.DB) {
-	DB.AutoMigrate(&cityRepo.City{})
+	DB.AutoMigrate(&cityRepo.City{}, &roleRepo.Role{})
 }
 
 func Seeder(db *gorm.DB) {
@@ -49,5 +50,12 @@ func Seeder(db *gorm.DB) {
 		{Code: "JKT", Name: "Jakarta", CreatedAt: time.Now(), UpdatedAt: time.Now()},
 	}
 
+	var roles = []roleRepo.Role{
+		{Code: "SA", Name: "Admin", Status: true, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+		{Code: "AM", Name: "Admin", Status: true, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+		{Code: "US", Name: "User", Status: true, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+	}
+
 	db.Create(&cities)
+	db.Create(&roles)
 }

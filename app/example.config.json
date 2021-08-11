@@ -12,5 +12,9 @@
       "user": "root",
       "pass": "",
       "name": "swab_online"
+    },
+    "jwt" : {
+      "secret" : "<key>",
+      "expired" : 1
     }
   }
