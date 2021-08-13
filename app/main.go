@@ -76,6 +76,7 @@ func main() {
 	authCtrl := _authController.NewAuthController(e, authUsecase)
 
 	routesInit := _routes.ControllerList{
+		JWTMiddleware:  configJWT.Init(),
 		CityController: *cityCtrl,
 		RoleController: *roleCtrl,
 		UserController: *userCtrl,
