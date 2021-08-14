@@ -19,6 +19,22 @@ func NewAuthController(e *echo.Echo, cu auth.Usecase) *AuthController {
 	}
 }
 
+func (ctrl *AuthController) Register(c echo.Context) error {
+	ctx := c.Request().Context()
+	req := request.User{}
+	if err := c.Bind(&req); err != nil {
+		return controller.NewErrorResponse(c, http.StatusBadRequest, err)
+	}
+
+	resp, err := ctrl.authUsecase.Register(ctx, req.ToDomain())
+	if err != nil {
+		return err
+	}
+
+	return controller.NewSuccessResponse(c, resp)
+
+}
+
 func (ctrl *AuthController) Login(c echo.Context) error {
 	ctx := c.Request().Context()
 

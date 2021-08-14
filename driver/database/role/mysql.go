@@ -34,7 +34,17 @@ func (cr *roleRepository) Find(ctx context.Context) ([]role.Domain, error) {
 
 func (cr *roleRepository) FindByID(ctx context.Context, ID int) (role.Domain, error) {
 	rec := Role{}
-	err := cr.conn.Find(&rec).Error
+	err := cr.conn.Where("id = ? ", ID).Find(&rec).Error
+	if err != nil {
+		return role.Domain{}, err
+	}
+
+	return rec.ToDomain(), nil
+}
+
+func (cr *roleRepository) FindByCode(ctx context.Context, code string) (role.Domain, error) {
+	rec := Role{}
+	err := cr.conn.Where("code = ? ", code).Find(&rec).Error
 	if err != nil {
 		return role.Domain{}, err
 	}

@@ -34,4 +34,5 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 
 	authRouter := r.Group("/auth")
 	authRouter.POST("/login", cl.AuthController.Login)
+	authRouter.POST("/register", cl.AuthController.Register)
 }

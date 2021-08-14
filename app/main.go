@@ -72,7 +72,7 @@ func main() {
 	userUsecase := _userUsecase.NewUserUsecase(timeoutContext, userRepo)
 	userCtrl := _userController.NewUserController(e, userUsecase)
 
-	authUsecase := _authUsecase.NewAuthUsecase(timeoutContext, userUsecase, &configJWT)
+	authUsecase := _authUsecase.NewAuthUsecase(timeoutContext, userUsecase, roleUsecase, &configJWT)
 	authCtrl := _authController.NewAuthController(e, authUsecase)
 
 	routesInit := _routes.ControllerList{
