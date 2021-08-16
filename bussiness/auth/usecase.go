@@ -19,9 +19,8 @@ type authUsecase struct {
 	jwtAuth        *middleware.ConfigJWT
 }
 
-func NewAuthUsecase(timeout time.Duration, userUC user.Usecase, roleUC role.Usecase, jwt *middleware.ConfigJWT) Usecase {
+func NewAuthUsecase(timeout time.Duration, userUC user.Usecase, jwt *middleware.ConfigJWT) Usecase {
 	return &authUsecase{
-		roleUsecase:    roleUC,
 		userUsecase:    userUC,
 		jwtAuth:        jwt,
 		contextTimeout: timeout,
