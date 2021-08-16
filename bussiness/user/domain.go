@@ -23,7 +23,6 @@ type Usecase interface {
 	FindByID(ctx context.Context, ID int) (Domain, error)
 	FindByEmail(ctx context.Context, email string) (Domain, error)
 	Store(ctx context.Context, data *Domain, roleID int) (Domain, error)
-	Store(ctx context.Context, data *Domain) error
 }
 
 type Repository interface {

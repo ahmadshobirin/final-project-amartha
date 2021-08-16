@@ -16,6 +16,7 @@ import (
 	_userController "main-backend/controller/user"
 	_userRepo "main-backend/driver/database/user"
 
+
 	_authUsecase "main-backend/bussiness/auth"
 	_authController "main-backend/controller/auth"
 
@@ -71,6 +72,7 @@ func main() {
 	userRepo := _userRepo.NewUserRepository(db)
 	userUsecase := _userUsecase.NewUserUsecase(timeoutContext, userRepo)
 	userCtrl := _userController.NewUserController(e, userUsecase)
+
 
 	authUsecase := _authUsecase.NewAuthUsecase(timeoutContext, userUsecase, roleUsecase, &configJWT)
 	authCtrl := _authController.NewAuthController(e, authUsecase)
