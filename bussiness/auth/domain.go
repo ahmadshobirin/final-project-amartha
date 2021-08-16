@@ -7,6 +7,6 @@ import (
 )
 
 type Usecase interface {
-	// Register(ctx context.Context, data *user.Domain) (res Domain, err error)
+	Register(ctx context.Context, data *user.Domain) (res response.AuthResponse, err error)
 	Login(ctx context.Context, data *user.Domain) (res response.AuthResponse, err error)
 }

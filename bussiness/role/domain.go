@@ -17,9 +17,11 @@ type Domain struct {
 type Usecase interface {
 	Find(ctx context.Context) ([]Domain, error)
 	FindByID(ctx context.Context, id int) (Domain, error)
+	FindByCode(ctx context.Context, code string) (Domain, error)
 }
 
 type Repository interface {
 	Find(ctx context.Context) ([]Domain, error)
 	FindByID(ctx context.Context, id int) (Domain, error)
+	FindByCode(ctx context.Context, code string) (Domain, error)
 }

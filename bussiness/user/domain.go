@@ -22,6 +22,7 @@ type Usecase interface {
 	Fetch(ctx context.Context, page, perpage int) ([]Domain, int, error)
 	FindByID(ctx context.Context, ID int) (Domain, error)
 	FindByEmail(ctx context.Context, email string) (Domain, error)
+	Store(ctx context.Context, data *Domain, roleID int) (Domain, error)
 	Store(ctx context.Context, data *Domain) error
 }
 
@@ -29,5 +30,5 @@ type Repository interface {
 	Fetch(ctx context.Context, page, perpage int) ([]Domain, int, error)
 	FindByID(ctx context.Context, ID int) (Domain, error)
 	FindByEmail(ctx context.Context, email string) (Domain, error)
-	Store(ctx context.Context, data *Domain) (err error)
+	Store(ctx context.Context, data *Domain) (Domain, error)
 }
