@@ -4,11 +4,11 @@ import "errors"
 
 var (
 	// error_messages
-	ErrIDNotFound        = errors.New("id not found")
-	ErrNewsIDResource    = errors.New("(NewsID) not found or empty")
-	ErrNewsTitleResource = errors.New("(NewsTitle) not found or empty")
-	ErrCategoryNotFound  = errors.New("category not found")
-	ErrDuplicateData     = errors.New("duplicate data")
+	ErrIDNotFound               = errors.New("id not found")
+	ErrDuplicateData            = errors.New("duplicate data")
+	ErrDataAlreadyExist         = errors.New("data already exist")
+	ErrInternalServer           = errors.New("something gone wrong, contact administrator")
+	ErrUsernamePasswordNotFound = errors.New("(Username) or (Password) empty")
 
 	//Modular
 	BaseResponseMessageSuccess = "success"

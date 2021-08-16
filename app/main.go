@@ -12,8 +12,16 @@ import (
 	_roleController "main-backend/controller/role"
 	_roleRepo "main-backend/driver/database/role"
 
+	_userUsecase "main-backend/bussiness/user"
+	_userController "main-backend/controller/user"
+	_userRepo "main-backend/driver/database/user"
+
+	_authUsecase "main-backend/bussiness/auth"
+	_authController "main-backend/controller/auth"
+
 	_dbHelper "main-backend/driver/mysql"
 
+	"main-backend/app/middleware"
 	_routes "main-backend/app/routers"
 
 	"github.com/labstack/echo/v4"
@@ -43,12 +51,10 @@ func main() {
 	}
 	db := configdb.InitialDB()
 
-	// configJWT := _middleware.ConfigJWT{
-	// 	SecretJWT:       viper.GetString(`jwt.secret`),
-	// 	ExpiresDuration: viper.GetInt(`jwt.expired`),
-	// }
-
-	// fmt.Printf("%+v", configJWT)
+	configJWT := middleware.ConfigJWT{
+		SecretJWT:       viper.GetString(`jwt.secret`),
+		ExpiresDuration: viper.GetInt(`jwt.expired`),
+	}
 
 	timeoutContext := time.Duration(viper.GetInt("context.timeout")) * time.Second
 
@@ -62,9 +68,19 @@ func main() {
 	roleUsecase := _roleUsecase.NewRoleUsecase(timeoutContext, roleRepo)
 	roleCtrl := _roleController.NewRoleController(e, roleUsecase)
 
+	userRepo := _userRepo.NewUserRepository(db)
+	userUsecase := _userUsecase.NewUserUsecase(timeoutContext, userRepo)
+	userCtrl := _userController.NewUserController(e, userUsecase)
+
+	authUsecase := _authUsecase.NewAuthUsecase(timeoutContext, userUsecase, &configJWT)
+	authCtrl := _authController.NewAuthController(e, authUsecase)
+
 	routesInit := _routes.ControllerList{
+		JWTMiddleware:  configJWT.Init(),
 		CityController: *cityCtrl,
 		RoleController: *roleCtrl,
+		UserController: *userCtrl,
+		AuthController: *authCtrl,
 	}
 
 	routesInit.RouteRegister(e)
