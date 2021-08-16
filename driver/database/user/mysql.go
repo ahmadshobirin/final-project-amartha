@@ -59,12 +59,17 @@ func (nr *mysqlUsersRepository) FindByEmail(ctx context.Context, email string) (
 	return rec.toDomain(), nil
 }
 
-func (nr *mysqlUsersRepository) Store(ctx context.Context, data *user.Domain) (err error) {
+func (nr *mysqlUsersRepository) Store(ctx context.Context, data *user.Domain) (res user.Domain, err error) {
 	rec := fromDomain(data)
 	result := nr.Conn.Create(&rec)
 	if result.Error != nil {
-		return result.Error
+		return user.Domain{}, result.Error
 	}
 
-	return err
+	err = nr.Conn.Preload("Role").First(&rec, rec.ID).Error
+	if err != nil {
+		return user.Domain{}, result.Error
+	}
+
+	return rec.toDomain(), err
 }

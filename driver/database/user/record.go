@@ -10,7 +10,7 @@ import (
 type User struct {
 	ID        int `gorm:"primaryKey"`
 	RoleID    int
-	Role      role.Role `gorm:"references:id`
+	Role      role.Role
 	Name      string
 	Email     string
 	Password  string

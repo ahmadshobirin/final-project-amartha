@@ -4,10 +4,12 @@ import "errors"
 
 var (
 	// error_messages
-	ErrIDNotFound       = errors.New("id not found")
-	ErrDuplicateData    = errors.New("duplicate data")
-	ErrDataAlreadyExist = errors.New("data already exist")
-	ErrInternalServer   = errors.New("something gone wrong, contact administrator")
+
+	ErrIDNotFound               = errors.New("id not found")
+	ErrDuplicateData            = errors.New("duplicate data")
+	ErrDataAlreadyExist         = errors.New("data already exist")
+	ErrInternalServer           = errors.New("something gone wrong, contact administrator")
+	ErrUsernamePasswordNotFound = errors.New("(Username) or (Password) empty")
 
 	//Modular
 	BaseResponseMessageSuccess = "success"

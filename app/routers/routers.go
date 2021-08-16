@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"main-backend/controller/auth"
 	"main-backend/controller/city"
 	"main-backend/controller/role"
 	"main-backend/controller/user"
@@ -14,6 +15,7 @@ type ControllerList struct {
 	CityController city.CityController
 	RoleController role.RoleController
 	UserController user.UserController
+	AuthController auth.AuthController
 }
 
 func (cl *ControllerList) RouteRegister(e *echo.Echo) {
@@ -29,4 +31,8 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 
 	userRouter := r.Group("/user")
 	userRouter.POST("", cl.UserController.Store)
+
+	authRouter := r.Group("/auth")
+	authRouter.POST("/login", cl.AuthController.Login)
+	authRouter.POST("/register", cl.AuthController.Register)
 }

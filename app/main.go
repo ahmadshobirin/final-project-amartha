@@ -16,6 +16,10 @@ import (
 	_userController "main-backend/controller/user"
 	_userRepo "main-backend/driver/database/user"
 
+
+	_authUsecase "main-backend/bussiness/auth"
+	_authController "main-backend/controller/auth"
+
 	_dbHelper "main-backend/driver/mysql"
 
 	"main-backend/app/middleware"
@@ -69,11 +73,16 @@ func main() {
 	userUsecase := _userUsecase.NewUserUsecase(timeoutContext, userRepo)
 	userCtrl := _userController.NewUserController(e, userUsecase)
 
+
+	authUsecase := _authUsecase.NewAuthUsecase(timeoutContext, userUsecase, roleUsecase, &configJWT)
+	authCtrl := _authController.NewAuthController(e, authUsecase)
+
 	routesInit := _routes.ControllerList{
 		JWTMiddleware:  configJWT.Init(),
 		CityController: *cityCtrl,
 		RoleController: *roleCtrl,
 		UserController: *userCtrl,
+		AuthController: *authCtrl,
 	}
 
 	routesInit.RouteRegister(e)
