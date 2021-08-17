@@ -7,9 +7,10 @@ import (
 
 type User struct {
 	ID        int       `json:"id"`
+	RoleID    int       `json:"role_id"`
+	Role      string    `json:"role"`
 	Name      string    `json:"name"`
 	Email     string    `json:"email"`
-	Password  string    `json:"password"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
@@ -17,9 +18,10 @@ type User struct {
 func FromDomain(domain user.Domain) User {
 	return User{
 		ID:        domain.ID,
+		RoleID:    domain.RoleID,
+		Role:      domain.Role,
 		Name:      domain.Name,
 		Email:     domain.Email,
-		Password:  domain.Password,
 		CreatedAt: domain.CreatedAt,
 		UpdatedAt: domain.UpdatedAt,
 	}

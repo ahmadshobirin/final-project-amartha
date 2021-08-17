@@ -3,6 +3,7 @@ package routers
 import (
 	"main-backend/controller/auth"
 	"main-backend/controller/city"
+	"main-backend/controller/clinic"
 	"main-backend/controller/role"
 	"main-backend/controller/user"
 
@@ -11,11 +12,12 @@ import (
 )
 
 type ControllerList struct {
-	JWTMiddleware  middleware.JWTConfig
-	CityController city.CityController
-	RoleController role.RoleController
-	UserController user.UserController
-	AuthController auth.AuthController
+	JWTMiddleware    middleware.JWTConfig
+	CityController   city.CityController
+	RoleController   role.RoleController
+	UserController   user.UserController
+	AuthController   auth.AuthController
+	ClinicController clinic.ClinicController
 }
 
 func (cl *ControllerList) RouteRegister(e *echo.Echo) {
@@ -36,5 +38,14 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 	roleRouter.GET("/:id", cl.RoleController.FindByID)
 
 	userRouter := r.Group("/user")
+	userRouter.GET("", cl.UserController.Fetch)
+	userRouter.GET("/profile", cl.UserController.Profile)
 	userRouter.POST("", cl.UserController.Store)
+  
+	clinicRouter := r.Group("/clinic")
+	clinicRouter.GET("", cl.ClinicController.Fetch)
+	clinicRouter.GET("/:id", cl.ClinicController.FindByID)
+	clinicRouter.POST("", cl.ClinicController.Store)
+	clinicRouter.PUT("/:id", cl.ClinicController.Update)
+	clinicRouter.DELETE("/:id", cl.ClinicController.Delete)
 }
