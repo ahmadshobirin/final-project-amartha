@@ -9,7 +9,7 @@ import (
 
 type BaseResponse struct {
 	Meta struct {
-		Total    int      `json:"total"`
+		Total    int      `json:"total,omiempty"`
 		Status   int      `json:"status"`
 		Message  string   `json:"message"`
 		Messages []string `json:"messages,omitempty"`
