@@ -73,3 +73,13 @@ func (repo *mysqlUsersRepository) Store(ctx context.Context, data *user.Domain) 
 
 	return rec.toDomain(), err
 }
+
+func (repo *mysqlUsersRepository) Update(ctx context.Context, data *user.Domain) error {
+	rec := fromDomain(data)
+	result := repo.Conn.Updates(rec)
+	if result.Error != nil {
+		return result.Error
+	}
+
+	return nil
+}

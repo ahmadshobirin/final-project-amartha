@@ -56,6 +56,26 @@ func (ctrl *UserController) Profile(c echo.Context) error {
 	return controller.NewSuccessResponse(c, response.FromDomain(result))
 }
 
+func (ctrl *UserController) Update(c echo.Context) error {
+	ctx := c.Request().Context()
+
+	user := ctrl.jwtAuth.GetUser(c)
+
+	req := request.User{}
+	if err := c.Bind(&req); err != nil {
+		return controller.NewErrorResponse(c, http.StatusBadRequest, err)
+	}
+
+	domainReq := req.ToDomain()
+	domainReq.ID = user.ID
+	err := ctrl.userUseCase.Update(ctx, domainReq)
+	if err != nil {
+		return controller.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+
+	return controller.NewSuccessResponse(c, nil)
+}
+
 func (ctrl *UserController) Store(c echo.Context) error {
 	ctx := c.Request().Context()
 

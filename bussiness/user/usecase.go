@@ -92,3 +92,26 @@ func (uc *userUsecase) Store(ctx context.Context, data *Domain, roleID int) (res
 
 	return res, err
 }
+
+func (uc *userUsecase) Update(ctx context.Context, data *Domain) (err error) {
+	existedUsers, err := uc.userRepository.FindByID(ctx, data.ID)
+	if err != nil {
+		return err
+	}
+
+	data.ID = existedUsers.ID
+
+	if data.Password != "" {
+		data.Password, err = encrypt.Hash(data.Password)
+		if err != nil {
+			return messages.ErrInternalServer
+		}
+	}
+
+	err = uc.userRepository.Update(ctx, data)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
