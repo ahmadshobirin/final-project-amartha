@@ -71,8 +71,8 @@ func (uc *clinicUsecase) Store(ctx context.Context, data *Domain) error {
 	ctx, cancel := context.WithTimeout(ctx, uc.contextTimeout)
 	defer cancel()
 
-	existedWebinar, _ := uc.clinicRepository.GetByUserID(ctx, data.UserID)
-	if existedWebinar != (Domain{}) {
+	exist, _ := uc.clinicRepository.GetByUserID(ctx, data.UserID)
+	if exist != (Domain{}) {
 		return messages.ErrDuplicateData
 	}
 
@@ -85,11 +85,11 @@ func (uc *clinicUsecase) Store(ctx context.Context, data *Domain) error {
 }
 
 func (uc *clinicUsecase) Update(ctx context.Context, data *Domain) (err error) {
-	existedWebinar, err := uc.clinicRepository.GetByID(ctx, data.ID)
+	exist, err := uc.clinicRepository.GetByID(ctx, data.ID)
 	if err != nil {
 		return err
 	}
-	data.ID = existedWebinar.ID
+	data.ID = exist.ID
 
 	err = uc.clinicRepository.Update(ctx, data)
 	if err != nil {
@@ -100,11 +100,11 @@ func (uc *clinicUsecase) Update(ctx context.Context, data *Domain) (err error) {
 }
 
 func (uc *clinicUsecase) Delete(ctx context.Context, data *Domain) (err error) {
-	existedWebinar, err := uc.clinicRepository.GetByID(ctx, data.ID)
+	exist, err := uc.clinicRepository.GetByID(ctx, data.ID)
 	if err != nil {
 		return err
 	}
-	data.ID = existedWebinar.ID
+	data.ID = exist.ID
 
 	err = uc.clinicRepository.Delete(ctx, data)
 	if err != nil {

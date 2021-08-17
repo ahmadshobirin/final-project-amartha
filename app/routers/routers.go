@@ -30,8 +30,11 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 	r.Use(middleware.JWTWithConfig(cl.JWTMiddleware))
 
 	cityRouter := r.Group("/city")
-	cityRouter.GET("", cl.CityController.Find)
+	cityRouter.GET("", cl.CityController.GetAll)
 	cityRouter.GET("/:id", cl.CityController.FindByID)
+	cityRouter.POST("", cl.CityController.Store)
+	cityRouter.PUT("/:id", cl.CityController.Update)
+	cityRouter.DELETE("/:id", cl.CityController.Delete)
 
 	roleRouter := r.Group("/role")
 	roleRouter.GET("", cl.RoleController.Find)
@@ -42,7 +45,7 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 	userRouter.GET("/profile", cl.UserController.Profile)
 	userRouter.PUT("/profile", cl.UserController.Update)
 	userRouter.POST("", cl.UserController.Store)
-  
+
 	clinicRouter := r.Group("/clinic")
 	clinicRouter.GET("", cl.ClinicController.Fetch)
 	clinicRouter.GET("/:id", cl.ClinicController.FindByID)
