@@ -14,11 +14,18 @@ type Domain struct {
 }
 
 type Usecase interface {
-	Find(ctx context.Context) ([]Domain, error)
+	GetAll(ctx context.Context) ([]Domain, error)
 	FindByID(ctx context.Context, id int) (Domain, error)
+	Store(ctx context.Context, data *Domain) error
+	Update(ctx context.Context, data *Domain) error
+	Delete(ctx context.Context, data *Domain) error
 }
 
 type Repository interface {
-	Find(ctx context.Context) ([]Domain, error)
+	GetAll(ctx context.Context) ([]Domain, error)
 	FindByID(ctx context.Context, id int) (Domain, error)
+	GetByName(ctx context.Context, name string) (Domain, error)
+	Store(ctx context.Context, data *Domain) error
+	Update(ctx context.Context, data *Domain) error
+	Delete(ctx context.Context, data *Domain) error
 }
