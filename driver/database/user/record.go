@@ -32,6 +32,8 @@ func fromDomain(domain *user.Domain) *User {
 func (rec *User) toDomain() user.Domain {
 	return user.Domain{
 		ID:        rec.ID,
+		RoleID:    rec.Role.ID,
+		Role:      rec.Role.Code,
 		Name:      rec.Name,
 		Email:     rec.Email,
 		Password:  rec.Password,

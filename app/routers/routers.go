@@ -38,6 +38,8 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 	roleRouter.GET("/:id", cl.RoleController.FindByID)
 
 	userRouter := r.Group("/user")
+	userRouter.GET("", cl.UserController.Fetch)
+	userRouter.GET("/profile", cl.UserController.Profile)
 	userRouter.POST("", cl.UserController.Store)
 
 	clinicRouter := r.Group("/clinic")
