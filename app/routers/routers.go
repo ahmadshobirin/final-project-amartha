@@ -40,7 +40,7 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 	userRouter := r.Group("/user")
 	userRouter.GET("", cl.UserController.Fetch)
 	userRouter.GET("/profile", cl.UserController.Profile)
-	userRouter.POST("", cl.UserController.Store)
+	userRouter.PUT("/profile", cl.UserController.Update)
 
 	clinicRouter := r.Group("/clinic")
 	clinicRouter.GET("", cl.ClinicController.Fetch)
