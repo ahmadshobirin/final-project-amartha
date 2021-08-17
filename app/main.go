@@ -80,7 +80,7 @@ func main() {
 	clinicUsecase := _clinicUsecase.NewClinicUsecase(timeoutContext, clinicRepo)
 	clinicCtrl := _clinicController.NewClinicController(e, clinicUsecase)
 
-	authUsecase := _authUsecase.NewAuthUsecase(timeoutContext, userUsecase, &configJWT)
+	authUsecase := _authUsecase.NewAuthUsecase(timeoutContext, userUsecase, roleUsecase, &configJWT)
 	authCtrl := _authController.NewAuthController(e, authUsecase)
 
 	routesInit := _routes.ControllerList{
