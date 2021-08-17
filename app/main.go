@@ -16,6 +16,10 @@ import (
 	_userController "main-backend/controller/user"
 	_userRepo "main-backend/driver/database/user"
 
+	_clinicUsecase "main-backend/bussiness/clinic"
+	_clinicController "main-backend/controller/clinic"
+	_clinicRepo "main-backend/driver/database/clinic"
+
 	_authUsecase "main-backend/bussiness/auth"
 	_authController "main-backend/controller/auth"
 
@@ -72,15 +76,20 @@ func main() {
 	userUsecase := _userUsecase.NewUserUsecase(timeoutContext, userRepo)
 	userCtrl := _userController.NewUserController(e, userUsecase)
 
+	clinicRepo := _clinicRepo.NewClinicRepository(db)
+	clinicUsecase := _clinicUsecase.NewClinicUsecase(timeoutContext, clinicRepo)
+	clinicCtrl := _clinicController.NewClinicController(e, clinicUsecase)
+
 	authUsecase := _authUsecase.NewAuthUsecase(timeoutContext, userUsecase, &configJWT)
 	authCtrl := _authController.NewAuthController(e, authUsecase)
 
 	routesInit := _routes.ControllerList{
-		JWTMiddleware:  configJWT.Init(),
-		CityController: *cityCtrl,
-		RoleController: *roleCtrl,
-		UserController: *userCtrl,
-		AuthController: *authCtrl,
+		JWTMiddleware:    configJWT.Init(),
+		CityController:   *cityCtrl,
+		RoleController:   *roleCtrl,
+		UserController:   *userCtrl,
+		AuthController:   *authCtrl,
+		ClinicController: *clinicCtrl,
 	}
 
 	routesInit.RouteRegister(e)
