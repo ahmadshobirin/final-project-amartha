@@ -3,6 +3,7 @@ package auth
 import (
 	"main-backend/bussiness/auth"
 	"main-backend/controller"
+	"main-backend/controller/auth/response"
 	"main-backend/controller/user/request"
 	"net/http"
 
@@ -26,9 +27,13 @@ func (ctrl *AuthController) Register(c echo.Context) error {
 		return controller.NewErrorResponse(c, http.StatusBadRequest, err)
 	}
 
-	resp, err := ctrl.authUsecase.Register(ctx, req.ToDomain())
+	data, err := ctrl.authUsecase.Register(ctx, req.ToDomain())
 	if err != nil {
 		return err
+	}
+
+	resp := response.AuthResponse{
+		Token: data,
 	}
 
 	return controller.NewSuccessResponse(c, resp)
@@ -43,9 +48,13 @@ func (ctrl *AuthController) Login(c echo.Context) error {
 		return controller.NewErrorResponse(c, http.StatusBadRequest, err)
 	}
 
-	resp, err := ctrl.authUsecase.Login(ctx, req.ToDomain())
+	data, err := ctrl.authUsecase.Login(ctx, req.ToDomain())
 	if err != nil {
 		return err
+	}
+
+	resp := response.AuthResponse{
+		Token: data,
 	}
 
 	return controller.NewSuccessResponse(c, resp)
