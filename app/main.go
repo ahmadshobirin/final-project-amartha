@@ -74,7 +74,7 @@ func main() {
 
 	userRepo := _userRepo.NewUserRepository(db)
 	userUsecase := _userUsecase.NewUserUsecase(timeoutContext, userRepo)
-	userCtrl := _userController.NewUserController(e, userUsecase)
+	userCtrl := _userController.NewUserController(e, userUsecase, &configJWT)
 
 	clinicRepo := _clinicRepo.NewClinicRepository(db)
 	clinicUsecase := _clinicUsecase.NewClinicUsecase(timeoutContext, clinicRepo)

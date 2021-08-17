@@ -30,7 +30,6 @@ func (jwtConf *ConfigJWT) Init() middleware.JWTConfig {
 	}
 }
 
-// GenerateToken jwt ...
 func (jwtConf *ConfigJWT) GenerateToken(userID int) string {
 	claims := JwtCustomClaims{
 		userID,
@@ -46,8 +45,7 @@ func (jwtConf *ConfigJWT) GenerateToken(userID int) string {
 	return token
 }
 
-// GetUser from jwt ...
-func GetUser(c echo.Context) *JwtCustomClaims {
+func (jwtConf *ConfigJWT) GetUser(c echo.Context) *JwtCustomClaims {
 	user := c.Get("user").(*jwt.Token)
 	claims := user.Claims.(*JwtCustomClaims)
 	return claims
