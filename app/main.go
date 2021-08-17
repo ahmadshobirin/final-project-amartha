@@ -72,6 +72,10 @@ func main() {
 	userUsecase := _userUsecase.NewUserUsecase(timeoutContext, userRepo)
 	userCtrl := _userController.NewUserController(e, userUsecase)
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> development
 	authUsecase := _authUsecase.NewAuthUsecase(timeoutContext, userUsecase, roleUsecase, &configJWT)
 	authCtrl := _authController.NewAuthController(e, authUsecase)
 

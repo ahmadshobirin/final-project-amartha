@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"log"
 	cityRepo "main-backend/driver/database/city"
+	"main-backend/driver/database/clinic"
 	roleRepo "main-backend/driver/database/role"
+	"main-backend/driver/database/transaction"
 	userRepo "main-backend/driver/database/user"
 	"time"
 
@@ -40,7 +42,7 @@ func (config *ConfigDB) InitialDB() *gorm.DB {
 }
 
 func Migrate(DB *gorm.DB) {
-	DB.AutoMigrate(&cityRepo.City{}, &roleRepo.Role{}, &userRepo.User{})
+	DB.AutoMigrate(&cityRepo.City{}, &roleRepo.Role{}, &userRepo.User{}, &clinic.Clinic{}, &transaction.Transaction{})
 }
 
 func Seeder(db *gorm.DB) {
