@@ -26,7 +26,7 @@ func (ctrl *UserController) Store(c echo.Context) error {
 	if err := c.Bind(&req); err != nil {
 		return controller.NewErrorResponse(c, http.StatusBadRequest, err)
 	}
-  
+
 	_, err := ctrl.userUseCase.Store(ctx, req.ToDomain(), 0)
 	if err != nil {
 		return controller.NewErrorResponse(c, http.StatusInternalServerError, err)

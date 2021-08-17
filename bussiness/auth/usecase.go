@@ -5,7 +5,6 @@ import (
 	"main-backend/app/middleware"
 	"main-backend/bussiness/role"
 	"main-backend/bussiness/user"
-	"main-backend/controller/auth/response"
 	"main-backend/helper/encrypt"
 	"main-backend/helper/messages"
 	"strings"
@@ -28,7 +27,7 @@ func NewAuthUsecase(timeout time.Duration, userUC user.Usecase, roleUC role.Usec
 	}
 }
 
-func (uc authUsecase) Register(ctx context.Context, data *user.Domain) (res response.AuthResponse, err error) {
+func (uc authUsecase) Register(ctx context.Context, data *user.Domain) (res string, err error) {
 	ctx, cancel := context.WithTimeout(ctx, uc.contextTimeout)
 	defer cancel()
 
@@ -42,14 +41,10 @@ func (uc authUsecase) Register(ctx context.Context, data *user.Domain) (res resp
 		return res, err
 	}
 
-	res = response.AuthResponse{
-		Token: uc.jwtAuth.GenerateToken(newUser.ID),
-	}
-
-	return res, err
+	return uc.jwtAuth.GenerateToken(newUser.ID), err
 }
 
-func (uc authUsecase) Login(ctx context.Context, data *user.Domain) (res response.AuthResponse, err error) {
+func (uc authUsecase) Login(ctx context.Context, data *user.Domain) (res string, err error) {
 	ctx, cancel := context.WithTimeout(ctx, uc.contextTimeout)
 	defer cancel()
 
@@ -66,9 +61,5 @@ func (uc authUsecase) Login(ctx context.Context, data *user.Domain) (res respons
 		return res, messages.ErrInternalServer
 	}
 
-	res = response.AuthResponse{
-		Token: uc.jwtAuth.GenerateToken(user.ID),
-	}
-
-	return res, err
+	return uc.jwtAuth.GenerateToken(user.ID), err
 }
