@@ -67,24 +67,28 @@ func (uc *userUsecase) FindByEmail(ctx context.Context, email string) (Domain, e
 	return res, nil
 }
 
-func (uc *userUsecase) Store(ctx context.Context, data *Domain) (err error) {
+func (uc *userUsecase) Store(ctx context.Context, data *Domain, roleID int) (res Domain, err error) {
 	exist, _ := uc.FindByEmail(ctx, data.Email)
 	if err != nil && err != sql.ErrNoRows {
-		return err
+		return res, err
 	}
 	if exist != (Domain{}) {
-		return messages.ErrDataAlreadyExist
+		return res, messages.ErrDataAlreadyExist
 	}
 
 	data.Password, err = encrypt.Hash(data.Password)
 	if err != nil {
-		return messages.ErrInternalServer
+		return res, messages.ErrInternalServer
 	}
 
-	err = uc.userRepository.Store(ctx, data)
+	if roleID != 0 {
+		data.RoleID = roleID
+	}
+
+	res, err = uc.userRepository.Store(ctx, data)
 	if err != nil {
-		return err
+		return res, err
 	}
 
-	return err
+	return res, err
 }

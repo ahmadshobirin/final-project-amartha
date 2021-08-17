@@ -3,10 +3,9 @@ package auth
 import (
 	"context"
 	"main-backend/bussiness/user"
-	"main-backend/controller/auth/response"
 )
 
 type Usecase interface {
-	// Register(ctx context.Context, data *user.Domain) (res Domain, err error)
-	Login(ctx context.Context, data *user.Domain) (res response.AuthResponse, err error)
+	Register(ctx context.Context, data *user.Domain) (res string, err error)
+	Login(ctx context.Context, data *user.Domain) (res string, err error)
 }

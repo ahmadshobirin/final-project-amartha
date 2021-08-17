@@ -34,3 +34,12 @@ func (cu *RoleUsecase) FindByID(ctx context.Context, id int) (Domain, error) {
 
 	return resp, nil
 }
+
+func (cu *RoleUsecase) FindByCode(ctx context.Context, code string) (Domain, error) {
+	resp, err := cu.roleRepository.FindByCode(ctx, code)
+	if err != nil {
+		return Domain{}, err
+	}
+
+	return resp, nil
+}

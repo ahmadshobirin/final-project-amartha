@@ -7,6 +7,8 @@ import (
 	"main-backend/driver/database/clinic"
 	"main-backend/driver/database/role"
 	"main-backend/driver/database/user"
+	"main-backend/driver/database/clinic"
+	"main-backend/driver/database/transaction"
 	"time"
 
 	"gorm.io/driver/mysql"
@@ -41,7 +43,7 @@ func (config *ConfigDB) InitialDB() *gorm.DB {
 }
 
 func Migrate(DB *gorm.DB) {
-	DB.AutoMigrate(&city.City{}, &role.Role{}, &user.User{}, &clinic.Clinic{})
+	DB.AutoMigrate(&cityRepo.City{}, &roleRepo.Role{}, &userRepo.User{}, &clinic.Clinic{}, &transaction.Transaction{})
 }
 
 func Seeder(db *gorm.DB) {

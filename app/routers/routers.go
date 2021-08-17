@@ -23,6 +23,12 @@ type ControllerList struct {
 func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 	r := e.Group("/api/v1")
 
+	authRouter := r.Group("/auth")
+	authRouter.POST("/login", cl.AuthController.Login)
+	authRouter.POST("/register", cl.AuthController.Register)
+
+	r.Use(middleware.JWTWithConfig(cl.JWTMiddleware))
+
 	cityRouter := r.Group("/city")
 	cityRouter.GET("", cl.CityController.Find)
 	cityRouter.GET("/:id", cl.CityController.FindByID)
@@ -33,9 +39,6 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 
 	userRouter := r.Group("/user")
 	userRouter.POST("", cl.UserController.Store)
-
-	authRouter := r.Group("/auth")
-	authRouter.POST("/login", cl.AuthController.Login)
 
 	clinicRouter := r.Group("/clinic")
 	clinicRouter.GET("", cl.ClinicController.Fetch)
