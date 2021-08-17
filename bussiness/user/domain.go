@@ -6,14 +6,14 @@ import (
 )
 
 type Domain struct {
-	ID        int    `json:"id" gorm:"primaryKey"`
-	RoleID    int    `json:"role_id"`
-	Role      string `json:"role"`
-	Name      string `json:"name"`
-	Email     string `json:"email"`
-	Password  string `json:"password"`
-	Bio       string `json:"bio"`
-	Status    bool   `json:"status"`
+	ID        int
+	RoleID    int
+	Role      string
+	Name      string
+	Email     string
+	Password  string
+	Bio       string
+	Status    bool
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }

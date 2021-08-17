@@ -9,6 +9,7 @@ var (
 	ErrDataAlreadyExist         = errors.New("data already exist")
 	ErrInternalServer           = errors.New("something gone wrong, contact administrator")
 	ErrUsernamePasswordNotFound = errors.New("(Username) or (Password) empty")
+	ErrNotFound                 = errors.New("data not found")
 
 	//Modular
 	BaseResponseMessageSuccess = "success"

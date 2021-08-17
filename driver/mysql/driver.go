@@ -3,11 +3,12 @@ package mysql_driver
 import (
 	"fmt"
 	"log"
-	cityRepo "main-backend/driver/database/city"
+	"main-backend/driver/database/city"
 	"main-backend/driver/database/clinic"
-	roleRepo "main-backend/driver/database/role"
+	"main-backend/driver/database/role"
+	"main-backend/driver/database/user"
+	"main-backend/driver/database/clinic"
 	"main-backend/driver/database/transaction"
-	userRepo "main-backend/driver/database/user"
 	"time"
 
 	"gorm.io/driver/mysql"
@@ -46,14 +47,14 @@ func Migrate(DB *gorm.DB) {
 }
 
 func Seeder(db *gorm.DB) {
-	var cities = []cityRepo.City{
+	var cities = []city.City{
 		{Code: "SBY", Name: "Surabaya", CreatedAt: time.Now(), UpdatedAt: time.Now()},
 		{Code: "SDA", Name: "Sidoarjo", CreatedAt: time.Now(), UpdatedAt: time.Now()},
 		{Code: "MJK", Name: "Mojokerto", CreatedAt: time.Now(), UpdatedAt: time.Now()},
 		{Code: "JKT", Name: "Jakarta", CreatedAt: time.Now(), UpdatedAt: time.Now()},
 	}
 
-	var roles = []roleRepo.Role{
+	var roles = []role.Role{
 		{Code: "SA", Name: "Superadmin", Status: true, CreatedAt: time.Now(), UpdatedAt: time.Now()},
 		{Code: "AM", Name: "Admin", Status: true, CreatedAt: time.Now(), UpdatedAt: time.Now()},
 		{Code: "US", Name: "User", Status: true, CreatedAt: time.Now(), UpdatedAt: time.Now()},

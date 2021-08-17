@@ -9,11 +9,22 @@ import (
 
 type BaseResponse struct {
 	Meta struct {
+		Total    int      `json:"total,omiempty"`
 		Status   int      `json:"status"`
 		Message  string   `json:"message"`
 		Messages []string `json:"messages,omitempty"`
 	} `json:"meta"`
 	Data interface{} `json:"data"`
+}
+
+func NewSuccessResponseWithTotal(c echo.Context, param interface{}, total int) error {
+	response := BaseResponse{}
+	response.Meta.Total = total
+	response.Meta.Status = http.StatusOK
+	response.Meta.Message = messages.BaseResponseMessageSuccess
+	response.Data = param
+
+	return c.JSON(http.StatusOK, response)
 }
 
 func NewSuccessResponse(c echo.Context, param interface{}) error {

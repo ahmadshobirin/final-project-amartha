@@ -21,7 +21,7 @@ func (nr *mysqlUsersRepository) Fetch(ctx context.Context, page, perpage int) ([
 	rec := []User{}
 
 	offset := (page - 1) * perpage
-	err := nr.Conn.Preload("roles").Offset(offset).Limit(perpage).Find(&rec).Error
+	err := nr.Conn.Preload("Roles").Offset(offset).Limit(perpage).Find(&rec).Error
 	if err != nil {
 		return []user.Domain{}, 0, err
 	}
