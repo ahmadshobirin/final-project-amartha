@@ -20,7 +20,7 @@ func NewUserUsecase(timeout time.Duration, ur Repository) Usecase {
 	}
 }
 
-func (uc *userUsecase) Fetch(ctx context.Context, page, perpage int) ([]Domain, int, error) {
+func (uc *userUsecase) Fetch(ctx context.Context, roleCode string, page, perpage int) ([]Domain, int, error) {
 	ctx, cancel := context.WithTimeout(ctx, uc.contextTimeout)
 	defer cancel()
 
@@ -31,7 +31,7 @@ func (uc *userUsecase) Fetch(ctx context.Context, page, perpage int) ([]Domain, 
 		perpage = 25
 	}
 
-	res, total, err := uc.userRepository.Fetch(ctx, page, perpage)
+	res, total, err := uc.userRepository.Fetch(ctx, roleCode, page, perpage)
 	if err != nil {
 		return []Domain{}, 0, err
 	}

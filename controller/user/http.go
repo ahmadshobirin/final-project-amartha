@@ -29,8 +29,9 @@ func (ctrl *UserController) Fetch(c echo.Context) error {
 
 	page, _ := strconv.Atoi(c.QueryParam("page"))
 	perpage, _ := strconv.Atoi(c.QueryParam("per_page"))
+	roleCode := c.QueryParam("role_code")
 
-	resp, count, err := ctrl.userUseCase.Fetch(ctx, page, perpage)
+	resp, count, err := ctrl.userUseCase.Fetch(ctx, roleCode, page, perpage)
 	if err != nil {
 		return controller.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}

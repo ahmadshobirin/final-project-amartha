@@ -17,11 +17,15 @@ func NewUserRepository(conn *gorm.DB) user.Repository {
 	}
 }
 
-func (repo *mysqlUsersRepository) Fetch(ctx context.Context, page, perpage int) ([]user.Domain, int, error) {
+func (repo *mysqlUsersRepository) Fetch(ctx context.Context, roleCode string, page, perpage int) ([]user.Domain, int, error) {
 	rec := []User{}
 
 	offset := (page - 1) * perpage
-	err := repo.Conn.Preload("Role").Offset(offset).Limit(perpage).Find(&rec).Error
+	query := repo.Conn.Preload("Role").Distinct().Joins("JOIN roles ON roles.id = users.role_id")
+	if roleCode != "" {
+		query = query.Where("roles.code = ?", roleCode)
+	}
+	err := query.Offset(offset).Limit(perpage).Find(&rec).Error
 	if err != nil {
 		return []user.Domain{}, 0, err
 	}
