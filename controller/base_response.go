@@ -42,5 +42,5 @@ func NewErrorResponse(c echo.Context, status int, err error) error {
 	response.Meta.Message = messages.BaseResponseMessageFailed
 	response.Meta.Messages = []string{err.Error()}
 
-	return c.JSON(http.StatusOK, response)
+	return c.JSON(status, response)
 }
