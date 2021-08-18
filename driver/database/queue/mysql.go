@@ -17,11 +17,11 @@ func NewQueueRepository(conn *gorm.DB) queue.Repository {
 	}
 }
 
-func (repo *queueRepository) Fetch(ctx context.Context, page, perpage int) ([]queue.Domain, int, error) {
+func (repo *queueRepository) Fetch(ctx context.Context, userID, page, perpage int) ([]queue.Domain, int, error) {
 	rec := []Queue{}
 
 	offset := (page - 1) * perpage
-	err := repo.Conn.Preload("User").Preload("Clinic").Offset(offset).Limit(perpage).Find(&rec).Error
+	err := repo.Conn.Preload("User").Preload("Clinic").Where("queues.id = ?", userID).Offset(offset).Limit(perpage).Find(&rec).Error
 	if err != nil {
 		return []queue.Domain{}, 0, err
 	}
@@ -41,7 +41,7 @@ func (repo *queueRepository) Fetch(ctx context.Context, page, perpage int) ([]qu
 
 func (cr *queueRepository) FindByID(ctx context.Context, ID int) (queue.Domain, error) {
 	rec := Queue{}
-	err := cr.Conn.Preload("User").Preload("Clinic").Where("queues.id = ?", ID).Find(&rec).Error
+	err := cr.Conn.Preload("User").Preload("Clinic").Preload("Clinic.User").Where("queues.id = ?", ID).Find(&rec).Error
 	if err != nil {
 		return queue.Domain{}, err
 	}

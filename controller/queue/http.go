@@ -29,10 +29,11 @@ func NewQueueController(e *echo.Echo, cu queue.Usecase, jwt *middleware.ConfigJW
 func (ctrl *QueueController) Fetch(c echo.Context) error {
 	ctx := c.Request().Context()
 
+	user := middleware.GetUser(c)
 	page, _ := strconv.Atoi(c.QueryParam("page"))
 	perpage, _ := strconv.Atoi(c.QueryParam("per_page"))
 
-	resp, count, err := ctrl.queueUC.Fetch(ctx, page, perpage)
+	resp, count, err := ctrl.queueUC.Fetch(ctx, user.ID, page, perpage)
 	if err != nil {
 		return controller.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
@@ -43,6 +44,19 @@ func (ctrl *QueueController) Fetch(c echo.Context) error {
 	}
 
 	return controller.NewSuccessResponseWithTotal(c, responseController, count)
+}
+
+func (ctrl *QueueController) FindByID(c echo.Context) error {
+	ctx := c.Request().Context()
+
+	ID, _ := strconv.Atoi(c.QueryParam("id"))
+
+	resp, err := ctrl.queueUC.FindByID(ctx, ID)
+	if err != nil {
+		return controller.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+
+	return controller.NewSuccessResponse(c, *response.FromDomain(&resp))
 }
 
 func (ctrl *QueueController) Store(c echo.Context) error {
@@ -64,6 +78,8 @@ func (ctrl *QueueController) Store(c echo.Context) error {
 
 func (ctrl *QueueController) Update(c echo.Context) error {
 	ctx := c.Request().Context()
+	user := middleware.GetUser(c)
+
 	id := c.Param("id")
 	if strings.TrimSpace(id) == "" {
 		return controller.NewErrorResponse(c, http.StatusBadRequest, errors.New("missing required id"))
@@ -77,7 +93,7 @@ func (ctrl *QueueController) Update(c echo.Context) error {
 	domainReq := req.ToDomain()
 	idInt, _ := strconv.Atoi(id)
 	domainReq.ID = idInt
-	err := ctrl.queueUC.Update(ctx, domainReq)
+	err := ctrl.queueUC.Update(ctx, user.ID, domainReq)
 	if err != nil {
 		return controller.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}

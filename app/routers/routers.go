@@ -27,7 +27,7 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 	amMiddleware := *cl.JWTMiddleware
 	amMiddleware.Role = []string{"AM"}
 	usMiddleware := *cl.JWTMiddleware
-	usMiddleware.Role = []string{"AM"}
+	usMiddleware.Role = []string{"US"}
 
 	usersMiddleware := *cl.JWTMiddleware
 	usersMiddleware.Role = []string{"AM", "US", "SA"}
@@ -62,9 +62,10 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 	clinicRouter.PUT("/:id", cl.ClinicController.Update)
 	clinicRouter.DELETE("/:id", cl.ClinicController.Delete)
 
-	transactionRouter := r.Group("/transaction")
-	transactionRouter.GET("", cl.QueueController.Fetch)
-	transactionRouter.POST("", cl.QueueController.Store)
-	transactionRouter.PUT("/:id", cl.QueueController.Update)
+	queueRouter := r.Group("/queue")
+	queueRouter.GET("", cl.QueueController.Fetch, usersMiddleware.VerifyRole)
+	queueRouter.PUT("/:id", cl.QueueController.FindByID, usersMiddleware.VerifyRole)
+	queueRouter.POST("", cl.QueueController.Store, usMiddleware.VerifyRole)
+	queueRouter.PUT("/:id", cl.QueueController.Update, amMiddleware.VerifyRole)
 
 }
