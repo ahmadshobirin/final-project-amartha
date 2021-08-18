@@ -41,7 +41,7 @@ func (uc authUsecase) Register(ctx context.Context, data *user.Domain) (res stri
 		return res, err
 	}
 
-	return uc.jwtAuth.GenerateToken(newUser.ID), err
+	return uc.jwtAuth.GenerateToken(newUser.ID, newUser.Role.Code), err
 }
 
 func (uc authUsecase) Login(ctx context.Context, data *user.Domain) (res string, err error) {
@@ -61,5 +61,5 @@ func (uc authUsecase) Login(ctx context.Context, data *user.Domain) (res string,
 		return res, messages.ErrInternalServer
 	}
 
-	return uc.jwtAuth.GenerateToken(user.ID), err
+	return uc.jwtAuth.GenerateToken(user.ID, user.Role.Code), err
 }

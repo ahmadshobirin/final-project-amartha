@@ -14,13 +14,11 @@ import (
 
 type UserController struct {
 	userUseCase user.Usecase
-	jwtAuth     *middleware.ConfigJWT
 }
 
-func NewUserController(e *echo.Echo, uc user.Usecase, jwt *middleware.ConfigJWT) *UserController {
+func NewUserController(e *echo.Echo, uc user.Usecase) *UserController {
 	return &UserController{
 		userUseCase: uc,
-		jwtAuth:     jwt,
 	}
 }
 
@@ -47,8 +45,7 @@ func (ctrl *UserController) Fetch(c echo.Context) error {
 func (ctrl *UserController) Profile(c echo.Context) error {
 	ctx := c.Request().Context()
 
-	user := ctrl.jwtAuth.GetUser(c)
-
+	user := middleware.GetUser(c)
 	result, err := ctrl.userUseCase.FindByID(ctx, user.ID)
 	if err != nil {
 		return controller.NewErrorResponse(c, http.StatusInternalServerError, err)
@@ -60,7 +57,7 @@ func (ctrl *UserController) Profile(c echo.Context) error {
 func (ctrl *UserController) Update(c echo.Context) error {
 	ctx := c.Request().Context()
 
-	user := ctrl.jwtAuth.GetUser(c)
+	user := middleware.GetUser(c)
 
 	req := request.User{}
 	if err := c.Bind(&req); err != nil {
