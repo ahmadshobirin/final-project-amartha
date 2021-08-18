@@ -2,6 +2,7 @@ package queue
 
 import (
 	"context"
+	"errors"
 	"main-backend/helper/messages"
 	"time"
 )
@@ -18,7 +19,7 @@ func NewQueueUsecase(timeout time.Duration, wr Repository) Usecase {
 	}
 }
 
-func (uc *queueUsecase) Fetch(ctx context.Context, page, perpage int) ([]Domain, int, error) {
+func (uc *queueUsecase) Fetch(ctx context.Context, userID, page, perpage int) ([]Domain, int, error) {
 	ctx, cancel := context.WithTimeout(ctx, uc.contextTimeout)
 	defer cancel()
 
@@ -29,7 +30,7 @@ func (uc *queueUsecase) Fetch(ctx context.Context, page, perpage int) ([]Domain,
 		perpage = 25
 	}
 
-	res, total, err := uc.queueRepository.Fetch(ctx, page, perpage)
+	res, total, err := uc.queueRepository.Fetch(ctx, userID, page, perpage)
 	if err != nil {
 		return []Domain{}, 0, err
 	}
@@ -78,14 +79,20 @@ func (uc *queueUsecase) FindByID(ctx context.Context, ID int) (res Domain, err e
 	return res, err
 }
 
-func (uc *queueUsecase) Update(ctx context.Context, data *Domain) error {
+func (uc *queueUsecase) Update(ctx context.Context, adminID int, data *Domain) error {
 	exist, err := uc.queueRepository.FindByID(ctx, data.ID)
 	if err != nil {
 		return err
 	}
 
 	data.ID = exist.ID
-	data.Status = StatusPaid
+	if data.Status != StatusPaid && data.Status != StatusFailed {
+		return errors.New("failed_status")
+	}
+
+	if exist.Clinic.User.ID != adminID {
+		return errors.New("invalid_access")
+	}
 
 	err = uc.queueRepository.Update(ctx, data)
 	if err != nil {
