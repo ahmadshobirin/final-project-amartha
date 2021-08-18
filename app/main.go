@@ -27,6 +27,10 @@ import (
 	_authUsecase "main-backend/bussiness/auth"
 	_authController "main-backend/controller/auth"
 
+	_kawalCovidUsecase "main-backend/bussiness/kawalcovid"
+	_kawalCovidController "main-backend/controller/kawalcovid"
+	_kawalCovidRepo "main-backend/driver/thirdparties/kawalcovid"
+
 	_dbHelper "main-backend/driver/mysql"
 
 	"main-backend/app/middleware"
@@ -87,18 +91,23 @@ func main() {
 	authUsecase := _authUsecase.NewAuthUsecase(timeoutContext, userUsecase, roleUsecase, &configJWT)
 	authCtrl := _authController.NewAuthController(e, authUsecase)
 
+	kawalCovidRepo := _kawalCovidRepo.NewKawalcovid()
+	kawalCovidUsecase := _kawalCovidUsecase.NewKawalCovidUsecase(timeoutContext, kawalCovidRepo)
+	kawalCovidController := _kawalCovidController.NewKawalCovidController(e, kawalCovidUsecase)
+
 	queueRepo := _queueRepo.NewQueueRepository(db)
 	queueUsecase := _queueUsecase.NewQueueUsecase(timeoutContext, queueRepo)
 	queueCtrl := _queueController.NewQueueController(e, queueUsecase, &configJWT)
 
 	routesInit := _routes.ControllerList{
-		JWTMiddleware:    &configJWT,
-		CityController:   *cityCtrl,
-		RoleController:   *roleCtrl,
-		UserController:   *userCtrl,
-		AuthController:   *authCtrl,
-		ClinicController: *clinicCtrl,
-		QueueController:  *queueCtrl,
+		JWTMiddleware:        &configJWT,
+		CityController:       *cityCtrl,
+		RoleController:       *roleCtrl,
+		UserController:       *userCtrl,
+		AuthController:       *authCtrl,
+		ClinicController:     *clinicCtrl,
+		QueueController:      *queueCtrl,
+		KawalCovidController: *kawalCovidController,
 	}
 
 	routesInit.RouteRegister(e)

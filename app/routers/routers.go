@@ -4,6 +4,7 @@ import (
 	"main-backend/controller/auth"
 	"main-backend/controller/city"
 	"main-backend/controller/clinic"
+	"main-backend/controller/kawalcovid"
 	"main-backend/controller/queue"
 	"main-backend/controller/role"
 	"main-backend/controller/user"
@@ -14,13 +15,14 @@ import (
 )
 
 type ControllerList struct {
-	JWTMiddleware    *middleware.ConfigJWT
-	CityController   city.CityController
-	RoleController   role.RoleController
-	UserController   user.UserController
-	AuthController   auth.AuthController
-	ClinicController clinic.ClinicController
-	QueueController  queue.QueueController
+	JWTMiddleware        *middleware.ConfigJWT
+	CityController       city.CityController
+	RoleController       role.RoleController
+	UserController       user.UserController
+	AuthController       auth.AuthController
+	ClinicController     clinic.ClinicController
+	QueueController      queue.QueueController
+	KawalCovidController kawalcovid.KawalCovidController
 }
 
 func (cl *ControllerList) RouteRegister(e *echo.Echo) {
@@ -33,6 +35,9 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 	usersMiddleware.Role = []string{"AM", "US", "SA"}
 
 	r := e.Group("/api/v1")
+
+	kawalCovid := r.Group("/kawalCovid")
+	kawalCovid.GET("/", cl.KawalCovidController.Fetch)
 
 	authRouter := r.Group("/auth")
 	authRouter.POST("/login", cl.AuthController.Login)
