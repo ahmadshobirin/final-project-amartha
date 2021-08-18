@@ -28,7 +28,7 @@ func NewQueueController(e *echo.Echo, cu queue.Usecase, jwt *middleware.ConfigJW
 func (ctrl *QueueController) Store(c echo.Context) error {
 	ctx := c.Request().Context()
 
-	user := ctrl.jwtAuth.GetUser(c)
+	user := middleware.GetUser(c)
 	req := request.Queue{}
 	if err := c.Bind(&req); err != nil {
 		return controller.NewErrorResponse(c, http.StatusBadRequest, err)
