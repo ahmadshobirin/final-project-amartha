@@ -29,7 +29,7 @@ func (ctrl *RoleController) Find(c echo.Context) error {
 
 	responseController := []response.Role{}
 	for _, value := range resp {
-		responseController = append(responseController, response.FromDomain(value))
+		responseController = append(responseController, *response.FromDomain(&value))
 	}
 
 	return controller.NewSuccessResponse(c, responseController)
@@ -44,5 +44,5 @@ func (ctrl *RoleController) FindByID(c echo.Context) error {
 		return controller.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 
-	return controller.NewSuccessResponse(c, response.FromDomain(resp))
+	return controller.NewSuccessResponse(c, response.FromDomain(&resp))
 }

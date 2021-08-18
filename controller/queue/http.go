@@ -6,6 +6,7 @@ import (
 	"main-backend/bussiness/queue"
 	"main-backend/controller"
 	"main-backend/controller/queue/request"
+	"main-backend/controller/queue/response"
 	"net/http"
 	"strconv"
 	"strings"
@@ -23,6 +24,25 @@ func NewQueueController(e *echo.Echo, cu queue.Usecase, jwt *middleware.ConfigJW
 		queueUC: cu,
 		jwtAuth: jwt,
 	}
+}
+
+func (ctrl *QueueController) Fetch(c echo.Context) error {
+	ctx := c.Request().Context()
+
+	page, _ := strconv.Atoi(c.QueryParam("page"))
+	perpage, _ := strconv.Atoi(c.QueryParam("per_page"))
+
+	resp, count, err := ctrl.queueUC.Fetch(ctx, page, perpage)
+	if err != nil {
+		return controller.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+
+	responseController := []response.Queue{}
+	for _, value := range resp {
+		responseController = append(responseController, *response.FromDomain(&value))
+	}
+
+	return controller.NewSuccessResponseWithTotal(c, responseController, count)
 }
 
 func (ctrl *QueueController) Store(c echo.Context) error {

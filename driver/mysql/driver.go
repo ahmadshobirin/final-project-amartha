@@ -36,7 +36,7 @@ func (config *ConfigDB) InitialDB() *gorm.DB {
 	}
 
 	Migrate(db)
-	// Seeder(db)
+	Seeder(db)
 
 	return db
 }
@@ -46,19 +46,26 @@ func Migrate(DB *gorm.DB) {
 }
 
 func Seeder(db *gorm.DB) {
-	var cities = []city.City{
-		{Code: "SBY", Name: "Surabaya", CreatedAt: time.Now(), UpdatedAt: time.Now()},
-		{Code: "SDA", Name: "Sidoarjo", CreatedAt: time.Now(), UpdatedAt: time.Now()},
-		{Code: "MJK", Name: "Mojokerto", CreatedAt: time.Now(), UpdatedAt: time.Now()},
-		{Code: "JKT", Name: "Jakarta", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+	cities := []city.City{}
+	db.Find(&cities)
+	if len(cities) == 0 {
+		cities = []city.City{
+			{Code: "SBY", Name: "Surabaya", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			{Code: "SDA", Name: "Sidoarjo", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			{Code: "MJK", Name: "Mojokerto", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			{Code: "JKT", Name: "Jakarta", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+		}
+		db.Create(&cities)
 	}
 
-	var roles = []role.Role{
-		{Code: "SA", Name: "Superadmin", Status: true, CreatedAt: time.Now(), UpdatedAt: time.Now()},
-		{Code: "AM", Name: "Admin", Status: true, CreatedAt: time.Now(), UpdatedAt: time.Now()},
-		{Code: "US", Name: "User", Status: true, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+	var roles = []role.Role{}
+	db.Find(&roles)
+	if len(roles) == 0 {
+		roles = []role.Role{
+			{Code: "SA", Name: "Superadmin", Status: true, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			{Code: "AM", Name: "Admin", Status: true, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			{Code: "US", Name: "User", Status: true, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+		}
+		db.Create(&roles)
 	}
-
-	db.Create(&cities)
-	db.Create(&roles)
 }

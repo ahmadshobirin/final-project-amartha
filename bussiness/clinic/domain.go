@@ -2,15 +2,17 @@ package clinic
 
 import (
 	"context"
+	"main-backend/bussiness/city"
+	"main-backend/bussiness/user"
 	"time"
 )
 
 type Domain struct {
 	ID          int
 	UserID      int
-	User        string
+	User        *user.Domain
 	CityID      int
-	City        string
+	City        *city.Domain
 	Name        string
 	Description string
 	OpenTime    string

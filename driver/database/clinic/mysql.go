@@ -34,7 +34,7 @@ func (repo *mysqlClinicRepository) Fetch(ctx context.Context, page, perpage int)
 
 	var domainNews []clinic.Domain
 	for _, value := range rec {
-		domainNews = append(domainNews, value.toDomain())
+		domainNews = append(domainNews, *value.ToDomain())
 	}
 	return domainNews, int(totalData), nil
 }
@@ -46,7 +46,7 @@ func (repo *mysqlClinicRepository) GetByID(ctx context.Context, ID int) (res cli
 		return clinic.Domain{}, err
 	}
 
-	return rec.toDomain(), nil
+	return *rec.ToDomain(), nil
 }
 
 func (repo *mysqlClinicRepository) GetByUserID(ctx context.Context, userID int) (res clinic.Domain, err error) {
@@ -56,7 +56,7 @@ func (repo *mysqlClinicRepository) GetByUserID(ctx context.Context, userID int) 
 		return clinic.Domain{}, err
 	}
 
-	return rec.toDomain(), nil
+	return *rec.ToDomain(), nil
 }
 
 func (repo mysqlClinicRepository) Store(ctx context.Context, data *clinic.Domain) (err error) {

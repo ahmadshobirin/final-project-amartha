@@ -21,12 +21,15 @@ func fromDomain(domain *city.Domain) *City {
 	}
 }
 
-func (rec *City) ToDomain() city.Domain {
-	return city.Domain{
-		ID:        rec.ID,
-		Code:      rec.Code,
-		Name:      rec.Name,
-		CreatedAt: rec.CreatedAt,
-		UpdatedAt: rec.UpdatedAt,
+func (rec *City) ToDomain() (res *city.Domain) {
+	if rec != nil {
+		res = &city.Domain{
+			ID:        rec.ID,
+			Code:      rec.Code,
+			Name:      rec.Name,
+			CreatedAt: rec.CreatedAt,
+			UpdatedAt: rec.UpdatedAt,
+		}
 	}
+	return res
 }

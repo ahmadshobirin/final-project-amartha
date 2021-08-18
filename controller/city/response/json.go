@@ -12,12 +12,15 @@ type City struct {
 	UpdatedAt string `json:"updated_at"`
 }
 
-func FromDomain(domain city.Domain) City {
-	return City{
-		ID:        domain.ID,
-		Code:      domain.Code,
-		Name:      domain.Name,
-		CreatedAt: domain.CreatedAt.Format("2006-01-01 15:04:05"),
-		UpdatedAt: domain.UpdatedAt.Format("2006-01-01 15:04:05"),
+func FromDomain(domain *city.Domain) (res *City) {
+	if domain != nil {
+		res = &City{
+			ID:        domain.ID,
+			Code:      domain.Code,
+			Name:      domain.Name,
+			CreatedAt: domain.CreatedAt.Format("2006-01-01 15:04:05"),
+			UpdatedAt: domain.UpdatedAt.Format("2006-01-01 15:04:05"),
+		}
 	}
+	return res
 }

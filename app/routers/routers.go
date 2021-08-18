@@ -56,6 +56,7 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 	clinicRouter.DELETE("/:id", cl.ClinicController.Delete)
 
 	transactionRouter := r.Group("/transaction")
+	transactionRouter.GET("", cl.QueueController.Fetch)
 	transactionRouter.POST("", cl.QueueController.Store)
 	transactionRouter.PUT("/:id", cl.QueueController.Update)
 

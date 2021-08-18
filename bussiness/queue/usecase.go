@@ -18,6 +18,25 @@ func NewQueueUsecase(timeout time.Duration, wr Repository) Usecase {
 	}
 }
 
+func (uc *queueUsecase) Fetch(ctx context.Context, page, perpage int) ([]Domain, int, error) {
+	ctx, cancel := context.WithTimeout(ctx, uc.contextTimeout)
+	defer cancel()
+
+	if page <= 0 {
+		page = 1
+	}
+	if perpage <= 0 {
+		perpage = 25
+	}
+
+	res, total, err := uc.queueRepository.Fetch(ctx, page, perpage)
+	if err != nil {
+		return []Domain{}, 0, err
+	}
+
+	return res, total, nil
+}
+
 func (uc *queueUsecase) FindOne(ctx context.Context, userID, clinicID int, status string) (res Domain, err error) {
 	ctx, cancel := context.WithTimeout(ctx, uc.contextTimeout)
 	defer cancel()

@@ -26,7 +26,7 @@ func (repo *cityRepository) GetAll(ctx context.Context) ([]city.Domain, error) {
 
 	cityDomain := []city.Domain{}
 	for _, value := range rec {
-		cityDomain = append(cityDomain, value.ToDomain())
+		cityDomain = append(cityDomain, *value.ToDomain())
 	}
 
 	return cityDomain, nil
@@ -39,7 +39,7 @@ func (repo *cityRepository) FindByID(ctx context.Context, ID int) (city.Domain, 
 		return city.Domain{}, err
 	}
 
-	return rec.ToDomain(), nil
+	return *rec.ToDomain(), nil
 }
 
 func (repo *cityRepository) GetByName(ctx context.Context, name string) (city.Domain, error) {
@@ -49,7 +49,7 @@ func (repo *cityRepository) GetByName(ctx context.Context, name string) (city.Do
 		return city.Domain{}, err
 	}
 
-	return rec.ToDomain(), nil
+	return *rec.ToDomain(), nil
 }
 
 func (repo cityRepository) Store(ctx context.Context, data *city.Domain) (err error) {

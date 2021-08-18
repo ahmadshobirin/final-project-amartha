@@ -36,7 +36,7 @@ func (ctrl *ClinicController) Fetch(c echo.Context) error {
 
 	responseController := []response.Clinic{}
 	for _, value := range resp {
-		responseController = append(responseController, response.FromDomain(value))
+		responseController = append(responseController, *response.FromDomain(&value))
 	}
 
 	return controller.NewSuccessResponseWithTotal(c, responseController, count)
@@ -57,7 +57,7 @@ func (ctrl *ClinicController) FindByID(c echo.Context) error {
 		return controller.NewErrorResponse(c, http.StatusBadRequest, err)
 	}
 
-	return controller.NewSuccessResponse(c, response.FromDomain(result))
+	return controller.NewSuccessResponse(c, response.FromDomain(&result))
 
 }
 

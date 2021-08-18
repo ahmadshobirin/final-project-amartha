@@ -17,6 +17,28 @@ func NewQueueRepository(conn *gorm.DB) queue.Repository {
 	}
 }
 
+func (repo *queueRepository) Fetch(ctx context.Context, page, perpage int) ([]queue.Domain, int, error) {
+	rec := []Queue{}
+
+	offset := (page - 1) * perpage
+	err := repo.Conn.Preload("User").Preload("Clinic").Offset(offset).Limit(perpage).Find(&rec).Error
+	if err != nil {
+		return []queue.Domain{}, 0, err
+	}
+
+	var totalData int64
+	err = repo.Conn.Model(&rec).Count(&totalData).Error
+	if err != nil {
+		return []queue.Domain{}, 0, err
+	}
+
+	var data []queue.Domain
+	for _, value := range rec {
+		data = append(data, *value.ToDomain())
+	}
+	return data, int(totalData), nil
+}
+
 func (cr *queueRepository) FindByID(ctx context.Context, ID int) (queue.Domain, error) {
 	rec := Queue{}
 	err := cr.Conn.Preload("User").Preload("Clinic").Where("queues.id = ?", ID).Find(&rec).Error
@@ -24,7 +46,7 @@ func (cr *queueRepository) FindByID(ctx context.Context, ID int) (queue.Domain, 
 		return queue.Domain{}, err
 	}
 
-	return rec.toDomain(), nil
+	return *rec.ToDomain(), nil
 }
 
 func (cr *queueRepository) FindOne(ctx context.Context, userID, clinicID int, status string) (queue.Domain, error) {
@@ -34,7 +56,7 @@ func (cr *queueRepository) FindOne(ctx context.Context, userID, clinicID int, st
 		return queue.Domain{}, err
 	}
 
-	return rec.toDomain(), nil
+	return *rec.ToDomain(), nil
 }
 
 func (repo *queueRepository) Store(ctx context.Context, data *queue.Domain) (err error) {

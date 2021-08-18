@@ -34,7 +34,7 @@ func (repo *mysqlUsersRepository) Fetch(ctx context.Context, page, perpage int) 
 
 	var domainNews []user.Domain
 	for _, value := range rec {
-		domainNews = append(domainNews, value.toDomain())
+		domainNews = append(domainNews, *value.ToDomain())
 	}
 	return domainNews, int(totalData), nil
 }
@@ -46,7 +46,7 @@ func (repo *mysqlUsersRepository) FindByID(ctx context.Context, userID int) (use
 		return user.Domain{}, err
 	}
 
-	return rec.toDomain(), nil
+	return *rec.ToDomain(), nil
 }
 
 func (repo *mysqlUsersRepository) FindByEmail(ctx context.Context, email string) (user.Domain, error) {
@@ -56,7 +56,7 @@ func (repo *mysqlUsersRepository) FindByEmail(ctx context.Context, email string)
 		return user.Domain{}, err
 	}
 
-	return rec.toDomain(), nil
+	return *rec.ToDomain(), nil
 }
 
 func (repo *mysqlUsersRepository) Store(ctx context.Context, data *user.Domain) (res user.Domain, err error) {
@@ -71,7 +71,7 @@ func (repo *mysqlUsersRepository) Store(ctx context.Context, data *user.Domain) 
 		return user.Domain{}, result.Error
 	}
 
-	return rec.toDomain(), err
+	return *rec.ToDomain(), err
 }
 
 func (repo *mysqlUsersRepository) Update(ctx context.Context, data *user.Domain) error {

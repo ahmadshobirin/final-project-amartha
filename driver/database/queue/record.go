@@ -10,9 +10,9 @@ import (
 type Queue struct {
 	ID        int
 	ClinicID  int `gorm:"foreignKey:ClinicID;references:ID"`
-	Clinic    clinic.Clinic
+	Clinic    *clinic.Clinic
 	UserID    int
-	User      user.User `gorm:"foreignKey:UserID;references:ID"`
+	User      *user.User `gorm:"foreignKey:UserID;references:ID"`
 	Date      string
 	Price     float64
 	Status    string
@@ -31,17 +31,20 @@ func fromDomain(domain *queue.Domain) *Queue {
 	}
 }
 
-func (rec *Queue) toDomain() queue.Domain {
-	return queue.Domain{
-		ID:        rec.ID,
-		UserID:    rec.UserID,
-		User:      rec.User,
-		ClinicID:  rec.ClinicID,
-		Clinic:    rec.Clinic,
-		Date:      rec.Date,
-		Price:     rec.Price,
-		Status:    rec.Status,
-		CreatedAt: rec.CreatedAt,
-		UpdatedAt: rec.UpdatedAt,
+func (rec *Queue) ToDomain() (res *queue.Domain) {
+	if rec != nil {
+		res = &queue.Domain{
+			ID:        rec.ID,
+			UserID:    rec.UserID,
+			User:      rec.User.ToDomain(),
+			ClinicID:  rec.ClinicID,
+			Clinic:    rec.Clinic.ToDomain(),
+			Date:      rec.Date,
+			Price:     rec.Price,
+			Status:    rec.Status,
+			CreatedAt: rec.CreatedAt,
+			UpdatedAt: rec.UpdatedAt,
+		}
 	}
+	return res
 }

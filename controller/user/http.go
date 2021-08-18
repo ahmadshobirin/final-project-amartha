@@ -37,7 +37,7 @@ func (ctrl *UserController) Fetch(c echo.Context) error {
 
 	res := []response.User{}
 	for _, value := range resp {
-		res = append(res, response.FromDomain(value))
+		res = append(res, *response.FromDomain(&value))
 	}
 
 	return controller.NewSuccessResponseWithTotal(c, res, count)
@@ -53,7 +53,7 @@ func (ctrl *UserController) Profile(c echo.Context) error {
 		return controller.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 
-	return controller.NewSuccessResponse(c, response.FromDomain(result))
+	return controller.NewSuccessResponse(c, response.FromDomain(&result))
 }
 
 func (ctrl *UserController) Update(c echo.Context) error {

@@ -26,7 +26,7 @@ func (cr *roleRepository) Find(ctx context.Context) ([]role.Domain, error) {
 
 	roleDomain := []role.Domain{}
 	for _, value := range rec {
-		roleDomain = append(roleDomain, value.ToDomain())
+		roleDomain = append(roleDomain, *value.ToDomain())
 	}
 
 	return roleDomain, nil
@@ -39,7 +39,7 @@ func (cr *roleRepository) FindByID(ctx context.Context, ID int) (role.Domain, er
 		return role.Domain{}, err
 	}
 
-	return rec.ToDomain(), nil
+	return *rec.ToDomain(), nil
 }
 
 func (cr *roleRepository) FindByCode(ctx context.Context, code string) (role.Domain, error) {
@@ -49,5 +49,5 @@ func (cr *roleRepository) FindByCode(ctx context.Context, code string) (role.Dom
 		return role.Domain{}, err
 	}
 
-	return rec.ToDomain(), nil
+	return *rec.ToDomain(), nil
 }

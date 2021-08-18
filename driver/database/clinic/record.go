@@ -10,9 +10,9 @@ import (
 type Clinic struct {
 	ID          int `gorm:"primaryKey"`
 	UserID      int
-	User        user.User `gorm:"foreignKey:UserID;references:ID"`
+	User        *user.User `gorm:"foreignKey:UserID;references:ID"`
 	CityID      int
-	City        city.City `gorm:"foreignKey:CityID;references:ID"`
+	City        *city.City `gorm:"foreignKey:CityID;references:ID"`
 	Name        string
 	Description string
 	OpenTime    string
@@ -33,18 +33,21 @@ func fromDomain(domain *clinic.Domain) *Clinic {
 	}
 }
 
-func (rec *Clinic) toDomain() clinic.Domain {
-	return clinic.Domain{
-		ID:          rec.ID,
-		UserID:      rec.UserID,
-		User:        rec.User.Name,
-		CityID:      rec.CityID,
-		City:        rec.City.Name,
-		Name:        rec.Name,
-		Description: rec.Description,
-		OpenTime:    rec.OpenTime,
-		CloseTime:   rec.CloseTime,
-		CreatedAt:   rec.CreatedAt,
-		UpdatedAt:   rec.UpdatedAt,
+func (rec *Clinic) ToDomain() (res *clinic.Domain) {
+	if rec != nil {
+		res = &clinic.Domain{
+			ID:          rec.ID,
+			UserID:      rec.UserID,
+			User:        rec.User.ToDomain(),
+			CityID:      rec.CityID,
+			City:        rec.City.ToDomain(),
+			Name:        rec.Name,
+			Description: rec.Description,
+			OpenTime:    rec.OpenTime,
+			CloseTime:   rec.CloseTime,
+			CreatedAt:   rec.CreatedAt,
+			UpdatedAt:   rec.UpdatedAt,
+		}
 	}
+	return res
 }

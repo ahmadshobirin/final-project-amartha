@@ -2,17 +2,17 @@ package queue
 
 import (
 	"context"
-	"main-backend/driver/database/clinic"
-	"main-backend/driver/database/user"
+	"main-backend/bussiness/clinic"
+	"main-backend/bussiness/user"
 	"time"
 )
 
 type Domain struct {
 	ID        int
 	ClinicID  int
-	Clinic    clinic.Clinic
+	Clinic    *clinic.Domain
 	UserID    int
-	User      user.User
+	User      *user.Domain
 	Date      string
 	Price     float64
 	Status    string
@@ -27,6 +27,7 @@ const (
 )
 
 type Usecase interface {
+	Fetch(ctx context.Context, page, perpage int) ([]Domain, int, error)
 	FindByID(ctx context.Context, ID int) (Domain, error)
 	FindOne(ctx context.Context, userID, clinicID int, status string) (Domain, error)
 	Store(ctx context.Context, userID int, data *Domain) (err error)
@@ -35,6 +36,7 @@ type Usecase interface {
 
 type Repository interface {
 	FindByID(ctx context.Context, ID int) (Domain, error)
+	Fetch(ctx context.Context, page, perpage int) ([]Domain, int, error)
 	FindOne(ctx context.Context, userID, clinicID int, status string) (Domain, error)
 	Store(ctx context.Context, data *Domain) (err error)
 	Update(ctx context.Context, data *Domain) (err error)

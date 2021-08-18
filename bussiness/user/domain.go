@@ -2,13 +2,14 @@ package user
 
 import (
 	"context"
+	"main-backend/bussiness/role"
 	"time"
 )
 
 type Domain struct {
 	ID        int
 	RoleID    int
-	Role      string
+	Role      *role.Domain
 	Name      string
 	Email     string
 	Password  string

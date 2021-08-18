@@ -2,15 +2,15 @@ package user
 
 import (
 	user "main-backend/bussiness/user"
-
 	"main-backend/driver/database/role"
+
 	"time"
 )
 
 type User struct {
 	ID        int `gorm:"primaryKey"`
 	RoleID    int
-	Role      role.Role
+	Role      *role.Role
 	Name      string
 	Email     string
 	Password  string
@@ -29,15 +29,18 @@ func fromDomain(domain *user.Domain) *User {
 	}
 }
 
-func (rec *User) toDomain() user.Domain {
-	return user.Domain{
-		ID:        rec.ID,
-		RoleID:    rec.Role.ID,
-		Role:      rec.Role.Code,
-		Name:      rec.Name,
-		Email:     rec.Email,
-		Password:  rec.Password,
-		CreatedAt: rec.CreatedAt,
-		UpdatedAt: rec.UpdatedAt,
+func (rec *User) ToDomain() (res *user.Domain) {
+	if rec != nil {
+		res = &user.Domain{
+			ID:        rec.ID,
+			RoleID:    rec.RoleID,
+			Role:      rec.Role.ToDomain(),
+			Name:      rec.Name,
+			Email:     rec.Email,
+			Password:  rec.Password,
+			CreatedAt: rec.CreatedAt,
+			UpdatedAt: rec.UpdatedAt,
+		}
 	}
+	return res
 }
