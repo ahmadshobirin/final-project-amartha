@@ -31,7 +31,7 @@ func (repo *mysqlUsersRepository) Fetch(ctx context.Context, roleCode string, pa
 	}
 
 	var totalData int64
-	err = repo.Conn.Model(&rec).Count(&totalData).Error
+	err = query.Count(&totalData).Error
 	if err != nil {
 		return []user.Domain{}, 0, err
 	}
