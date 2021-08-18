@@ -20,6 +20,10 @@ import (
 	_clinicController "main-backend/controller/clinic"
 	_clinicRepo "main-backend/driver/database/clinic"
 
+	_queueUsecase "main-backend/bussiness/queue"
+	_queueController "main-backend/controller/queue"
+	_queueRepo "main-backend/driver/database/queue"
+
 	_authUsecase "main-backend/bussiness/auth"
 	_authController "main-backend/controller/auth"
 
@@ -83,6 +87,10 @@ func main() {
 	authUsecase := _authUsecase.NewAuthUsecase(timeoutContext, userUsecase, roleUsecase, &configJWT)
 	authCtrl := _authController.NewAuthController(e, authUsecase)
 
+	queueRepo := _queueRepo.NewQueueRepository(db)
+	queueUsecase := _queueUsecase.NewQueueUsecase(timeoutContext, queueRepo)
+	queueCtrl := _queueController.NewQueueController(e, queueUsecase, &configJWT)
+
 	routesInit := _routes.ControllerList{
 		JWTMiddleware:    configJWT.Init(),
 		CityController:   *cityCtrl,
@@ -90,6 +98,7 @@ func main() {
 		UserController:   *userCtrl,
 		AuthController:   *authCtrl,
 		ClinicController: *clinicCtrl,
+		QueueController:  *queueCtrl,
 	}
 
 	routesInit.RouteRegister(e)

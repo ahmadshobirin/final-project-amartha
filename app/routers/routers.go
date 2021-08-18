@@ -4,6 +4,7 @@ import (
 	"main-backend/controller/auth"
 	"main-backend/controller/city"
 	"main-backend/controller/clinic"
+	"main-backend/controller/queue"
 	"main-backend/controller/role"
 	"main-backend/controller/user"
 
@@ -18,6 +19,7 @@ type ControllerList struct {
 	UserController   user.UserController
 	AuthController   auth.AuthController
 	ClinicController clinic.ClinicController
+	QueueController  queue.QueueController
 }
 
 func (cl *ControllerList) RouteRegister(e *echo.Echo) {
@@ -52,4 +54,9 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 	clinicRouter.POST("", cl.ClinicController.Store)
 	clinicRouter.PUT("/:id", cl.ClinicController.Update)
 	clinicRouter.DELETE("/:id", cl.ClinicController.Delete)
+
+	transactionRouter := r.Group("/transaction")
+	transactionRouter.POST("", cl.QueueController.Store)
+	transactionRouter.PUT("/:id", cl.QueueController.Update)
+
 }
