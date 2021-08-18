@@ -51,7 +51,7 @@ func (repo *mysqlUsersRepository) FindByID(ctx context.Context, userID int) (use
 
 func (repo *mysqlUsersRepository) FindByEmail(ctx context.Context, email string) (user.Domain, error) {
 	rec := User{}
-	err := repo.Conn.Where("email = ?", email).First(&rec).Error
+	err := repo.Conn.Preload("Role").Where("email = ?", email).First(&rec).Error
 	if err != nil {
 		return user.Domain{}, err
 	}

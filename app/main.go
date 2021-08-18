@@ -78,7 +78,7 @@ func main() {
 
 	userRepo := _userRepo.NewUserRepository(db)
 	userUsecase := _userUsecase.NewUserUsecase(timeoutContext, userRepo)
-	userCtrl := _userController.NewUserController(e, userUsecase, &configJWT)
+	userCtrl := _userController.NewUserController(e, userUsecase)
 
 	clinicRepo := _clinicRepo.NewClinicRepository(db)
 	clinicUsecase := _clinicUsecase.NewClinicUsecase(timeoutContext, clinicRepo)
@@ -92,7 +92,7 @@ func main() {
 	queueCtrl := _queueController.NewQueueController(e, queueUsecase, &configJWT)
 
 	routesInit := _routes.ControllerList{
-		JWTMiddleware:    configJWT.Init(),
+		JWTMiddleware:    &configJWT,
 		CityController:   *cityCtrl,
 		RoleController:   *roleCtrl,
 		UserController:   *userCtrl,
