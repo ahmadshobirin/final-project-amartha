@@ -4,9 +4,6 @@ Seperti yang kita tahu pada Maret 2020 virus Covid-19 di Indonesia pertama kali 
 
 Pada bulan Mei 2020 Klinik Amartha mengalami pembengkakan pelayanan SWAB, CEO memtutuskan untuk segera memindahkan segala urusan administrasi dan antrian ke dalam Aplikasi.
 
-## API Documentation
-Buka file ``` swagger.yaml ``` di dalam folder swagger
-
 ## Arsitektur Code
 1. Language [GoLang](https://golang.org/)
 2. Framewrok [Framework Echo](https://echo.labstack.com/)
@@ -14,6 +11,14 @@ Buka file ``` swagger.yaml ``` di dalam folder swagger
 4. Object Relational Mapping [Gorm io](https://gorm.io/docs/index.html)
 5. MysqlDB
 5. Consume Open API [Api Kawalcovid](https://kawalcorona.com/api/)
+
+## API
+
+### Postman
+Collection Postman ``` https://www.getpostman.com/collections/a23956a257499d05b21f ```
+
+### Dokumentasi
+Buka file ``` swagger.yaml ``` di dalam folder swagger
 
 ## Lisensi
 Open Source
