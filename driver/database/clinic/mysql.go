@@ -17,11 +17,17 @@ func NewClinicRepository(conn *gorm.DB) clinic.Repository {
 	}
 }
 
-func (repo *mysqlClinicRepository) Fetch(ctx context.Context, page, perpage int) ([]clinic.Domain, int, error) {
+func (repo *mysqlClinicRepository) Fetch(ctx context.Context, cityID, page, perpage int) ([]clinic.Domain, int, error) {
 	rec := []Clinic{}
 
 	offset := (page - 1) * perpage
-	err := repo.Conn.Preload("User").Preload("City").Offset(offset).Limit(perpage).Find(&rec).Error
+	query := repo.Conn.Preload("User").Preload("City").Distinct().Joins("JOIN cities ON cities.id = clinics.city_id")
+	if cityID != 0 {
+		query = query.Where("cities.id = ?", cityID)
+	}
+	err := query.Offset(offset).Limit(perpage).Find(&rec).Error
+
+	// (offset).Limit(perpage).Find(&rec).Error
 	if err != nil {
 		return []clinic.Domain{}, 0, err
 	}

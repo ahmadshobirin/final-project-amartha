@@ -18,7 +18,7 @@ func NewClinicUsecase(timeout time.Duration, wr Repository) Usecase {
 	}
 }
 
-func (uc *clinicUsecase) Fetch(ctx context.Context, page, perpage int) ([]Domain, int, error) {
+func (uc *clinicUsecase) Fetch(ctx context.Context, cityID, page, perpage int) ([]Domain, int, error) {
 	ctx, cancel := context.WithTimeout(ctx, uc.contextTimeout)
 	defer cancel()
 
@@ -29,7 +29,7 @@ func (uc *clinicUsecase) Fetch(ctx context.Context, page, perpage int) ([]Domain
 		perpage = 25
 	}
 
-	res, total, err := uc.clinicRepository.Fetch(ctx, page, perpage)
+	res, total, err := uc.clinicRepository.Fetch(ctx, cityID, page, perpage)
 	if err != nil {
 		return []Domain{}, 0, err
 	}
