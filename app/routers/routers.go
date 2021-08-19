@@ -69,7 +69,7 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 
 	queueRouter := r.Group("/queue")
 	queueRouter.GET("", cl.QueueController.Fetch, usersMiddleware.VerifyRole)
-	queueRouter.PUT("/:id", cl.QueueController.FindByID, usersMiddleware.VerifyRole)
+	queueRouter.GET("/:id", cl.QueueController.FindByID, usersMiddleware.VerifyRole)
 	queueRouter.POST("", cl.QueueController.Store, usMiddleware.VerifyRole)
 	queueRouter.PUT("/:id", cl.QueueController.Update, amMiddleware.VerifyRole)
 

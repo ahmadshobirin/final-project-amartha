@@ -22,7 +22,7 @@ type Domain struct {
 }
 
 type Usecase interface {
-	Fetch(ctx context.Context, page, perpage int) ([]Domain, int, error)
+	Fetch(ctx context.Context, cityID, page, perpage int) ([]Domain, int, error)
 	GetByID(ctx context.Context, ID int) (Domain, error)
 	GetByUserID(ctx context.Context, userID int) (Domain, error)
 	Store(ctx context.Context, data *Domain) error
@@ -31,7 +31,7 @@ type Usecase interface {
 }
 
 type Repository interface {
-	Fetch(ctx context.Context, page, perpage int) ([]Domain, int, error)
+	Fetch(ctx context.Context, cityID, page, perpage int) ([]Domain, int, error)
 	GetByID(ctx context.Context, ID int) (Domain, error)
 	GetByUserID(ctx context.Context, userID int) (Domain, error)
 	Store(ctx context.Context, data *Domain) error

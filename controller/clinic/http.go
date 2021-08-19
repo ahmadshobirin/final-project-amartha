@@ -26,10 +26,11 @@ func NewClinicController(e *echo.Echo, cu clinic.Usecase) *ClinicController {
 func (ctrl *ClinicController) Fetch(c echo.Context) error {
 	ctx := c.Request().Context()
 
+	cityID, _ := strconv.Atoi(c.QueryParam("city_id"))
 	page, _ := strconv.Atoi(c.QueryParam("page"))
 	perpage, _ := strconv.Atoi(c.QueryParam("per_page"))
 
-	resp, count, err := ctrl.clinicUC.Fetch(ctx, page, perpage)
+	resp, count, err := ctrl.clinicUC.Fetch(ctx, cityID, page, perpage)
 	if err != nil {
 		return controller.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
