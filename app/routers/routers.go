@@ -37,7 +37,7 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 	r := e.Group("/api/v1")
 
 	kawalCovid := r.Group("/kawalCovid")
-	kawalCovid.GET("/", cl.KawalCovidController.Fetch)
+	kawalCovid.GET("", cl.KawalCovidController.Fetch)
 
 	authRouter := r.Group("/auth")
 	authRouter.POST("/login", cl.AuthController.Login)

@@ -37,6 +37,7 @@ import (
 	_routes "main-backend/app/routers"
 
 	"github.com/labstack/echo/v4"
+	echoMiddleware "github.com/labstack/echo/v4/middleware"
 
 	"github.com/spf13/viper"
 )
@@ -71,6 +72,7 @@ func main() {
 	timeoutContext := time.Duration(viper.GetInt("context.timeout")) * time.Second
 
 	e := echo.New()
+	e.Pre(echoMiddleware.RemoveTrailingSlash())
 
 	cityRepo := _cityRepo.NewCityRepository(db)
 	cityUsecase := _cityUsecase.NewCityUsecase(timeoutContext, cityRepo)
