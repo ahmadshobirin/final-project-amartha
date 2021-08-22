@@ -2,7 +2,6 @@ package user
 
 import (
 	"context"
-	"database/sql"
 	"main-backend/helper/encrypt"
 	"main-backend/helper/messages"
 	"time"
@@ -59,6 +58,10 @@ func (uc *userUsecase) FindByEmail(ctx context.Context, email string) (Domain, e
 	ctx, cancel := context.WithTimeout(ctx, uc.contextTimeout)
 	defer cancel()
 
+	if email == "" {
+		return Domain{}, messages.ErrInvalidParam
+	}
+
 	res, err := uc.userRepository.FindByEmail(ctx, email)
 	if err != nil {
 		return Domain{}, err
@@ -68,18 +71,12 @@ func (uc *userUsecase) FindByEmail(ctx context.Context, email string) (Domain, e
 }
 
 func (uc *userUsecase) Store(ctx context.Context, data *Domain, roleID int) (res Domain, err error) {
-	exist, _ := uc.FindByEmail(ctx, data.Email)
-	if err != nil && err != sql.ErrNoRows {
-		return res, err
-	}
-	if exist != (Domain{}) {
+	exist, _ := uc.userRepository.FindByEmail(ctx, data.Email)
+	if exist.ID != 0 {
 		return res, messages.ErrDataAlreadyExist
 	}
 
-	data.Password, err = encrypt.Hash(data.Password)
-	if err != nil {
-		return res, messages.ErrInternalServer
-	}
+	data.Password, _ = encrypt.Hash(data.Password)
 
 	if roleID != 0 {
 		data.RoleID = roleID
