@@ -14,6 +14,8 @@ var (
 	ErrExpiredToken             = errors.New("expired_token")
 	ErrInvalidRole              = errors.New("invalid_role")
 	ErrInvalidCred              = errors.New("invalid_credential")
+	ErrInvalidParam             = errors.New("invalid_param")
+
 	//Modular
 	BaseResponseMessageSuccess = "success"
 	BaseResponseMessageFailed  = "something not right"
