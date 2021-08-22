@@ -125,21 +125,6 @@ func TestFindByID(t *testing.T) {
 		assert.Nil(t, err)
 		assert.Equal(t, domain.ID, result.ID)
 	})
-
-	t.Run("test case 2, invalid id", func(t *testing.T) {
-		result, err := userUsecase.FindByID(context.Background(), -1)
-
-		assert.Equal(t, result, user.Domain{})
-		assert.Equal(t, err, messages.ErrIDNotFound)
-	})
-
-	t.Run("test case 3, repo err", func(t *testing.T) {
-		userRepo.On("FindByID", mock.Anything, mock.AnythingOfType("string")).Return(user.Domain{}, messages.ErrInvalidParam).Once()
-		result, err := userUsecase.FindByEmail(context.Background(), "")
-
-		assert.Equal(t, result, user.Domain{})
-		assert.Equal(t, err, messages.ErrInvalidParam)
-	})
 }
 
 func TestFindByEmail(t *testing.T) {
@@ -180,6 +165,23 @@ func TestStore(t *testing.T) {
 		userRepo.On("Store", mock.Anything, mock.AnythingOfType("*user.Domain")).Return(user.Domain{}, nil).Once()
 
 		_, err := userUsecase.Store(context.Background(), &domain, 1)
+
+		assert.NoError(t, err)
+	})
+}
+
+func TestUpdate(t *testing.T) {
+	t.Run("test case 1, valid test ", func(t *testing.T) {
+		domain := user.Domain{
+			ID:     1,
+			RoleID: 1,
+			Name:   "Ahmad Shobirin",
+			Email:  "ahmadshobirin@gmail.com",
+		}
+		userRepo.On("FindByID", mock.Anything, mock.AnythingOfType("int")).Return(domain, nil).Once()
+		userRepo.On("Update", mock.Anything, &domain).Return(nil).Once()
+
+		err := userUsecase.Update(context.Background(), &domain)
 
 		assert.NoError(t, err)
 	})

@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"fmt"
 	"main-backend/helper/encrypt"
 	"main-backend/helper/messages"
 	"time"
@@ -96,13 +97,12 @@ func (uc *userUsecase) Update(ctx context.Context, data *Domain) (err error) {
 		return err
 	}
 
+	fmt.Printf("exist user: %+v  \n", existedUsers)
+	fmt.Println("after find by id")
 	data.ID = existedUsers.ID
 
 	if data.Password != "" {
-		data.Password, err = encrypt.Hash(data.Password)
-		if err != nil {
-			return messages.ErrInternalServer
-		}
+		data.Password, _ = encrypt.Hash(data.Password)
 	}
 
 	err = uc.userRepository.Update(ctx, data)
